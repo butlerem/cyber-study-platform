@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Flag, Trophy, Brain, HelpCircle, TerminalSquare } from "lucide-react";
 import SpaceBackground from "../components/SpaceBackground";
+import AnimatedCounter from "./Community";
 
 function Home() {
   return (
@@ -11,7 +12,7 @@ function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-6xl font-bold mb-8 glow">
-              Ready. Set. <span className="text-[#9580FF]">HACK!</span>
+              Hacker<span className="text-[#9580FF]">Labs</span>
             </h1>
             <p className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto">
               Master your cybersecurity skills through hands-on challenges. From
@@ -111,6 +112,16 @@ function Home() {
             You're not alone. Engage with others, ask questions, share
             knowledge, and contribute to writeups and challenge development.
           </p>
+
+          <AnimatedCounter
+            end={243}
+            className="text-5xl text-[#9580FF] font-bold mb-6 glow"
+          />
+
+          <p className="text-gray-400 mb-10">
+            members already learning and hacking together
+          </p>
+
           <div className="flex justify-center space-x-6">
             <Link
               to="/community"

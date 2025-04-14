@@ -3,8 +3,7 @@ import { Users, MessageSquare, HeartHandshake } from "lucide-react";
 
 function Community() {
   const [count, setCount] = useState(0);
-  const finalCount = 243; // Replace this with a dynamic value from your backend if needed
-
+  const finalCount = 243; // Replace this with a dynamic value
   useEffect(() => {
     let start = 0;
     const end = finalCount;
