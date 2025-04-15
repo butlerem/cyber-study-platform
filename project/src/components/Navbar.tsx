@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Terminal, Trophy, Layout, Users } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -10,28 +10,28 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <Terminal className="h-8 w-8 text-[#9580FF]" />
               <span className="ml-2 text-xl font-bold">HackerLabs</span>
             </Link>
           </div>
           <div className="flex items-center space-x-4">
             <Link
-              to="/challenges"
+              href="/challenges"
               className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
             >
               <Layout className="h-5 w-5 mr-1" />
               <span>Challenges</span>
             </Link>
             <Link
-              to="/leaderboard"
+              href="/leaderboard"
               className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
             >
               <Trophy className="h-5 w-5 mr-1" />
               <span>Leaderboard</span>
             </Link>
             <Link
-              to="/community"
+              href="/community"
               className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
             >
               <Trophy className="h-5 w-5 mr-1" />
@@ -40,7 +40,7 @@ function Navbar() {
             {user ? (
               <>
                 <Link
-                  to="/dashboard"
+                  href="/dashboard"
                   className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
                 >
                   <Users className="h-5 w-5 mr-1" />
@@ -55,7 +55,7 @@ function Navbar() {
               </>
             ) : (
               <Link
-                to="/login"
+                href="/login"
                 className="bg-[#9580FF] text-white px-4 py-2 rounded-md hover:bg-[#6E54C8] transition-colors"
               >
                 Login

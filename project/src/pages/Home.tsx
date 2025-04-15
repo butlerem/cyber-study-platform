@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Flag, Trophy, Brain, HelpCircle, TerminalSquare } from "lucide-react";
 import SpaceBackground from "../components/SpaceBackground";
-import AnimatedCounter from "./Community";
+import AnimatedCounter from "../components/AnimatedCounter";
 
 function Home() {
   return (
@@ -22,13 +22,13 @@ function Home() {
             </p>
             <div className="flex justify-center space-x-6">
               <Link
-                to="/register"
+                href="/register"
                 className="bg-[#9580FF] text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-[#6E54C8] transform hover:scale-105 transition-all"
               >
                 Get Started
               </Link>
               <Link
-                to="/challenges"
+                href="/challenges"
                 className="border border-[#9580FF] text-[#9580FF] px-8 py-3 rounded-md text-lg font-semibold hover:bg-[#12121A] transform hover:scale-105 transition-all"
               >
                 Browse Challenges
@@ -124,7 +124,7 @@ function Home() {
 
           <div className="flex justify-center space-x-6">
             <Link
-              to="/community"
+              href="/community"
               className="bg-[#12121A] border border-[#9580FF] text-[#9580FF] px-6 py-3 rounded-md font-semibold hover:bg-[#1A1A28] transition"
             >
               Visit Community Hub
@@ -137,9 +137,9 @@ function Home() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-8">What Our Users Say</h2>
             <p className="text-gray-400 italic">
-              “One of the best learning platforms I’ve used. The challenges are
-              practical, the community is amazing, and I’ve learned more here in
-              a month than a semester at school.”
+              "One of the best learning platforms I've used. The challenges are
+              practical, the community is amazing, and I've learned more here in
+              a month than a semester at school."
             </p>
             <p className="mt-4 text-gray-500">– A budding ethical hacker</p>
           </div>
