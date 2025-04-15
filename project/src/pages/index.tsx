@@ -2,7 +2,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
-import { Shield, Code, Users, ArrowRight } from 'lucide-react';
+import { BookOpen, Users, MessageSquare, ArrowRight, Code, Trophy, Shield, Rocket, User, Github, GitPullRequest } from 'lucide-react';
+import SpaceBackground from '../components/SpaceBackground';
+
+interface ExampleUser {
+  username: string;
+  avatar: string | null;
+  role: string;
+}
 
 export default function HomePage() {
   const router = useRouter();
@@ -10,15 +17,68 @@ export default function HomePage() {
   const [userCount, setUserCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  // Example users with diverse usernames and avatars
+  const exampleUsers: ExampleUser[] = [
+    {
+      username: "cyber_ninja_42",
+      avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=cyber_ninja_42&backgroundColor=12121A&textureChance=100",
+      role: "Web Security Expert"
+    },
+    {
+      username: "null.ptr",
+      avatar: null,
+      role: "System Hacker"
+    },
+    {
+      username: "0xDEADBEEF",
+      avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=0xDEADBEEF&backgroundColor=12121A&textureChance=100",
+      role: "Reverse Engineer"
+    },
+    {
+      username: "l33t_h4ck3r",
+      avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=l33t_h4ck3r&backgroundColor=12121A&textureChance=100",
+      role: "CTF Champion"
+    },
+    {
+      username: "ghost_in_the_shell",
+      avatar: null,
+      role: "Network Security"
+    },
+    {
+      username: "binary_wizard",
+      avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=binary_wizard&backgroundColor=12121A&textureChance=100",
+      role: "Binary Exploitation"
+    }
+  ];
+
   useEffect(() => {
-    // TODO: Replace with actual API call
     const fetchUserCount = async () => {
       try {
-        // Mock data for now
-        setUserCount(1234);
+        // Simulate fetching user count with animation
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Animate the counter from 0 to 1234
+        const targetCount = 234;
+        const duration = 2000; // 2 seconds
+        const steps = 60; // 60 steps for smooth animation
+        const stepDuration = duration / steps;
+        const increment = targetCount / steps;
+
+        let currentCount = 0;
+        const interval = setInterval(() => {
+          currentCount += increment;
+          if (currentCount >= targetCount) {
+            setUserCount(targetCount);
+            clearInterval(interval);
+            setLoading(false);
+          } else {
+            setUserCount(Math.floor(currentCount));
+          }
+        }, stepDuration);
+
+        return () => clearInterval(interval);
       } catch (error) {
         console.error('Failed to fetch user count:', error);
-      } finally {
         setLoading(false);
       }
     };
@@ -29,109 +89,180 @@ export default function HomePage() {
   return (
     <Layout>
       <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden">
-        {/* Space Animation Background */}
-        <div className="absolute inset-0 z-0">
-          <div className="stars"></div>
-          <div className="twinkling"></div>
-        </div>
+        {/* 3D Space Animation Background */}
+        <SpaceBackground />
         
-        {/* Content */}
         <div className="relative z-10">
-          {/* Hero Section */}
-          <div className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F1C]/80 to-[#12121A]/80 opacity-90"></div>
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
-              <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
-                  Master Cybersecurity Through
-                  <span className="block text-[#9580FF]">Hands-on Challenges</span>
-                </h1>
-                <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-400">
-                  Learn real-world security concepts through interactive challenges. From web security to cryptography, level up your skills with practical exercises.
-                </p>
-                <div className="mt-10">
-                  <button
-                    onClick={() => router.push('/challenges')}
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#9580FF] hover:bg-[#6E54C8] transition-colors duration-200"
-                  >
-                    Start Learning
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </button>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            {/* Hero Section */}
+            <div className="text-center mb-16">
+              <h1 className="text-5xl font-bold text-white mb-6">
+                Learn Cybersecurity Through Hands-On Challenges
+              </h1>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                Master practical security skills with our interactive labs and real-world scenarios.
+                Join our community of student security enthusiasts and advance your skills together.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <button
+                  onClick={() => router.push('/register')}
+                  className="bg-[#9580FF] text-white py-3 px-6 rounded-md hover:bg-[#6E54C8] transition-colors duration-200 font-medium"
+                >
+                  Get Started
+                </button>
+                <button
+                  onClick={() => router.push('/challenges')}
+                  className="bg-transparent border border-[#9580FF] text-white py-3 px-6 rounded-md hover:bg-[#9580FF]/10 transition-colors duration-200 font-medium"
+                >
+                  Browse Challenges
+                </button>
+              </div>
+            </div>
+
+            {/* Stats Section */}
+            <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 mb-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-[#9580FF] mb-2">
+                    {loading ? '...' : userCount.toLocaleString()}
+                  </div>
+                  <p className="text-gray-400">Active Learners</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-[#9580FF] mb-2">50+</div>
+                  <p className="text-gray-400">Security Challenges</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-[#9580FF] mb-2">24/7</div>
+                  <p className="text-gray-400">Community Support</p>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Features Section */}
-          <div className="py-16 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-white">Why Choose Our Platform</h2>
-                <p className="mt-4 text-xl text-gray-400">
-                  Learn cybersecurity through practical, hands-on experience
+            {/* Features Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              {/* Feature 1 */}
+              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
+                <div className="flex items-center mb-4">
+                  <BookOpen className="h-6 w-6 text-[#9580FF] mr-2" />
+                  <h3 className="text-xl font-bold text-white">Practical Learning</h3>
+                </div>
+                <p className="text-gray-400 mb-4">
+                  Hands-on labs and real-world scenarios to build practical security skills.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                {/* Practical Learning Card */}
-                <div className="bg-[#12121A]/90 rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8">
-                  <div className="flex items-center justify-center mb-6">
-                    <Code className="h-12 w-12 text-[#9580FF]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white text-center mb-4">Practical Learning</h3>
-                  <p className="text-gray-400 text-center">
-                    Hands-on challenges that simulate real-world security scenarios
-                  </p>
+              {/* Feature 2 */}
+              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
+                <div className="flex items-center mb-4">
+                  <Users className="h-6 w-6 text-[#9580FF] mr-2" />
+                  <h3 className="text-xl font-bold text-white">Active Community</h3>
                 </div>
+                <p className="text-gray-400 mb-4">
+                  Join our community of student security enthusiasts and learn together.
+                </p>
+              </div>
 
-                {/* Active Community Card */}
-                <div className="bg-[#12121A]/90 rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8">
-                  <div className="flex items-center justify-center mb-6">
-                    <Users className="h-12 w-12 text-[#9580FF]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white text-center mb-2">Active Community</h3>
-                  {loading ? (
-                    <div className="text-center text-gray-400">Loading...</div>
-                  ) : (
-                    <div className="text-4xl font-bold text-[#9580FF] text-center">{userCount}</div>
-                  )}
-                  <p className="text-gray-400 text-center mt-4">
-                    Join our growing community of security enthusiasts
-                  </p>
+              {/* Feature 3 */}
+              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
+                <div className="flex items-center mb-4">
+                  <GitPullRequest className="h-6 w-6 text-[#9580FF] mr-2" />
+                  <h3 className="text-xl font-bold text-white">Contribute</h3>
                 </div>
+                <p className="text-gray-400 mb-4">
+                  Submit your own challenges, improve existing ones, and help build this platform.
+                </p>
+              </div>
+            </div>
 
-                {/* Expert Guidance Card */}
-                <div className="bg-[#12121A]/90 rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8">
-                  <div className="flex items-center justify-center mb-6">
-                    <Shield className="h-12 w-12 text-[#9580FF]" />
+            {/* Learning Path Section */}
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-white text-center mb-8">Your Learning Journey</h2>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-[#12121A] rounded-lg p-6 border border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <Code className="h-6 w-6 text-[#9580FF] mr-2" />
+                    <h3 className="text-lg font-bold text-white">Basics</h3>
                   </div>
-                  <h3 className="text-xl font-bold text-white text-center mb-4">Expert Guidance</h3>
-                  <p className="text-gray-400 text-center">
-                    Learn from industry experts and get help when you need it
-                  </p>
+                  <p className="text-gray-400">Start with fundamental security concepts and tools</p>
+                </div>
+                <div className="bg-[#12121A] rounded-lg p-6 border border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <Shield className="h-6 w-6 text-[#9580FF] mr-2" />
+                    <h3 className="text-lg font-bold text-white">Web Security</h3>
+                  </div>
+                  <p className="text-gray-400">Learn about common web vulnerabilities and defenses</p>
+                </div>
+                <div className="bg-[#12121A] rounded-lg p-6 border border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <Rocket className="h-6 w-6 text-[#9580FF] mr-2" />
+                    <h3 className="text-lg font-bold text-white">Advanced</h3>
+                  </div>
+                  <p className="text-gray-400">Tackle complex security challenges and CTF-style problems</p>
+                </div>
+                <div className="bg-[#12121A] rounded-lg p-6 border border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <Trophy className="h-6 w-6 text-[#9580FF] mr-2" />
+                    <h3 className="text-lg font-bold text-white">Expert</h3>
+                  </div>
+                  <p className="text-gray-400">Master advanced techniques and contribute to the community</p>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* CTA Section */}
-          <div className="bg-[#12121A]/90 py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-white">Ready to Start Learning?</h2>
-                <p className="mt-4 text-xl text-gray-400">
-                  Join our community and begin your cybersecurity journey today
-                </p>
-                <div className="mt-8">
-                  <button
-                    onClick={() => router.push('/challenges')}
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#9580FF] hover:bg-[#6E54C8] transition-colors duration-200"
+            {/* Student Projects Section */}
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-white text-center mb-8">Built By Students, For Students</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-[#12121A] rounded-lg p-6 border border-gray-700">
+                  <h3 className="text-xl font-bold text-white mb-4">Community Contributions</h3>
+                  <p className="text-gray-400 mb-4">
+                    This platform is built and maintained by students passionate about cybersecurity.
+                    We actively contribute by creating new challenges, improving existing ones, 
+                    and sharing our knowledge with the community.
+                  </p>
+                  <a
+                    href="https://github.com/your-username/hackerlabs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#9580FF] hover:text-[#6E54C8] transition-colors duration-200 flex items-center"
                   >
-                    View Challenges
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </button>
+                    <Github className="h-5 w-5 mr-2" />
+                    Contribute on GitHub
+                  </a>
+                </div>
+                <div className="bg-[#12121A] rounded-lg p-6 border border-gray-700">
+                  <h3 className="text-xl font-bold text-white mb-4">Submit Your Challenges</h3>
+                  <p className="text-gray-400 mb-4">
+                    Have a great challenge idea? Submit it to our platform! We welcome contributions
+                    from all students. Create challenges, share your knowledge, and help others learn.
+                  </p>
+                  <a
+                    href="https://github.com/your-username/hackerlabs/issues/new?template=challenge-submission.md"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#9580FF] hover:text-[#6E54C8] transition-colors duration-200 flex items-center"
+                  >
+                    <GitPullRequest className="h-5 w-5 mr-2" />
+                    Submit a Challenge
+                  </a>
                 </div>
               </div>
+            </div>
+
+            {/* CTA Section */}
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Your Journey?</h2>
+              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                Join our platform today and take the first step towards mastering cybersecurity.
+                Connect with fellow students and build your skills together.
+              </p>
+              <button
+                onClick={() => router.push('/register')}
+                className="bg-[#9580FF] text-white py-3 px-8 rounded-md hover:bg-[#6E54C8] transition-colors duration-200 font-medium"
+              >
+                Get Started
+              </button>
             </div>
           </div>
         </div>

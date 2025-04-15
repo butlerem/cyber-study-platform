@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { Users, MessageSquare, ArrowRight } from 'lucide-react';
+import SpaceBackground from '../components/SpaceBackground';
 
 interface CommunityPost {
   id: string;
@@ -58,11 +59,31 @@ export default function CommunityPage() {
 
   const fetchUserCount = async () => {
     try {
-      // Mock data for now
-      setUserCount(1234);
+      // Simulate fetching user count with animation
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Animate the counter from 0 to 234
+      const targetCount = 234;
+      const duration = 2000; // 2 seconds
+      const steps = 60; // 60 steps for smooth animation
+      const stepDuration = duration / steps;
+      const increment = targetCount / steps;
+      
+      let currentCount = 0;
+      const interval = setInterval(() => {
+        currentCount += increment;
+        if (currentCount >= targetCount) {
+          setUserCount(targetCount);
+          clearInterval(interval);
+          setLoading(false);
+        } else {
+          setUserCount(Math.floor(currentCount));
+        }
+      }, stepDuration);
+      
+      return () => clearInterval(interval);
     } catch (error) {
       console.error('Failed to fetch user count:', error);
-    } finally {
       setLoading(false);
     }
   };
@@ -90,110 +111,95 @@ export default function CommunityPage() {
   return (
     <Layout>
       <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden">
-        {/* Space Animation Background */}
-        <div className="absolute inset-0 z-0">
-          <div className="stars"></div>
-          <div className="twinkling"></div>
-        </div>
+        {/* 3D Space Animation Background */}
+        <SpaceBackground />
         
-        {/* Content */}
-        <div className="relative z-10 py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            {/* Header */}
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold text-white mb-4">Join Our Community</h1>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Connect with other security enthusiasts, share knowledge, and collaborate on challenges.
+              <h1 className="text-4xl font-bold text-white">Community</h1>
+              <p className="mt-4 text-xl text-gray-400">
+                Connect with fellow security enthusiasts and share knowledge
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {/* User Counter Card */}
-              <div className="bg-[#12121A]/90 rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8">
-                <div className="flex items-center justify-center mb-6">
-                  <Users className="h-12 w-12 text-[#9580FF]" />
+            {/* User Counter Card */}
+            <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 mb-8">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex items-center mb-6 md:mb-0">
+                  <Users className="h-12 w-12 text-[#9580FF] mr-4" />
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">Active Members</h2>
+                    <p className="text-gray-400">Join our growing community</p>
+                  </div>
                 </div>
-                <h2 className="text-2xl font-bold text-white text-center mb-2">Active Users</h2>
-                {loading ? (
-                  <div className="text-center text-gray-400">Loading...</div>
-                ) : (
-                  <div className="text-4xl font-bold text-[#9580FF] text-center">{userCount}</div>
-                )}
-                <p className="text-gray-400 text-center mt-4">
-                  Join our growing community of security enthusiasts
-                </p>
+                <div className="text-center md:text-right">
+                  {loading ? (
+                    <div className="text-5xl font-bold text-[#9580FF]">...</div>
+                  ) : (
+                    <div className="text-5xl font-bold text-[#9580FF]">{userCount}</div>
+                  )}
+                  <p className="text-gray-400 mt-2">Security Enthusiasts</p>
+                </div>
               </div>
+            </div>
 
-              {/* Discord Card */}
-              <div className="bg-[#12121A]/90 rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8">
-                <div className="flex items-center justify-center mb-6">
-                  <MessageSquare className="h-12 w-12 text-[#9580FF]" />
+            {/* Discord Join Card */}
+            <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 mb-12">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex items-center mb-6 md:mb-0">
+                  <MessageSquare className="h-12 w-12 text-[#9580FF] mr-4" />
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">Join Our Discord</h2>
+                    <p className="text-gray-400">Connect with the community in real-time</p>
+                  </div>
                 </div>
-                <h2 className="text-2xl font-bold text-white text-center mb-4">Join Our Discord</h2>
-                <p className="text-gray-400 text-center mb-6">
-                  Get real-time help, share solutions, and connect with other members
-                </p>
                 <a
-                  href="https://discord.gg/your-server"
+                  href="https://discord.gg/example"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-full bg-[#9580FF] text-white py-3 px-4 rounded-md hover:bg-[#6E54C8] transition-colors duration-200"
+                  className="bg-[#5865F2] text-white py-3 px-6 rounded-md hover:bg-[#4752C4] transition-colors duration-200 flex items-center"
                 >
                   Join Discord
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="h-5 w-5 ml-2" />
                 </a>
               </div>
             </div>
 
             {/* Community Features */}
-            <div className="mt-16 max-w-4xl mx-auto">
-              <h2 className="text-2xl font-bold text-white text-center mb-8">Community Features</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-[#12121A]/90 rounded-lg p-6 border border-gray-700">
-                  <h3 className="text-lg font-semibold text-white mb-2">Real-time Support</h3>
-                  <p className="text-gray-400">Get help from experienced members when you're stuck on a challenge</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Feature 1 */}
+              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
+                <div className="flex items-center mb-4">
+                  <MessageSquare className="h-6 w-6 text-[#9580FF] mr-2" />
+                  <h3 className="text-xl font-bold text-white">Real-time Support</h3>
                 </div>
-                <div className="bg-[#12121A]/90 rounded-lg p-6 border border-gray-700">
-                  <h3 className="text-lg font-semibold text-white mb-2">Knowledge Sharing</h3>
-                  <p className="text-gray-400">Learn from others' experiences and share your own insights</p>
-                </div>
-                <div className="bg-[#12121A]/90 rounded-lg p-6 border border-gray-700">
-                  <h3 className="text-lg font-semibold text-white mb-2">Collaboration</h3>
-                  <p className="text-gray-400">Work together on challenges and build your network</p>
-                </div>
+                <p className="text-gray-400">
+                  Get help from community members and moderators when you're stuck on a challenge.
+                </p>
               </div>
-            </div>
 
-            <div className="mt-12">
-              {user && (
-                <div className="mb-8">
-                  <button className="bg-[#9580FF] text-white px-6 py-3 rounded-md hover:bg-[#6E54C8] transition-colors">
-                    Create Post
-                  </button>
+              {/* Feature 2 */}
+              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
+                <div className="flex items-center mb-4">
+                  <Users className="h-6 w-6 text-[#9580FF] mr-2" />
+                  <h3 className="text-xl font-bold text-white">Knowledge Sharing</h3>
                 </div>
-              )}
+                <p className="text-gray-400">
+                  Share your solutions and learn from others' approaches to security challenges.
+                </p>
+              </div>
 
-              <div className="space-y-6">
-                {posts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden p-6"
-                  >
-                    <h2 className="text-xl font-semibold text-white">{post.title}</h2>
-                    <p className="mt-2 text-gray-400">{post.content}</p>
-                    <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                      <div className="flex items-center space-x-4">
-                        <span>Posted by {post.author}</span>
-                        <span>•</span>
-                        <span>{post.createdAt}</span>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <span>{post.likes} likes</span>
-                        <span>•</span>
-                        <span>{post.comments} comments</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              {/* Feature 3 */}
+              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
+                <div className="flex items-center mb-4">
+                  <ArrowRight className="h-6 w-6 text-[#9580FF] mr-2" />
+                  <h3 className="text-xl font-bold text-white">Collaboration</h3>
+                </div>
+                <p className="text-gray-400">
+                  Work together on challenges and build your network of security professionals.
+                </p>
               </div>
             </div>
           </div>

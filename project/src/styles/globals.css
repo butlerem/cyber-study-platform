@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Space Animation */
+@keyframes move-background {
+  from {
+    transform: translate3d(0px, 0px, 0px);
+  }
+  to { 
+    transform: translate3d(1000px, 0px, 0px);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.stars {
+  background: #000 url('/images/stars.png') repeat top center;
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  animation: move-background 50s linear infinite;
+}
+
+.twinkling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background: transparent url('/images/twinkling.png') repeat top center;
+  animation: move-background 200s linear infinite;
+}
+
+/* Add a subtle gradient overlay to improve text readability */
+.stars::after, .twinkling::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(10, 15, 28, 0.7) 0%, rgba(10, 15, 28, 0.9) 100%);
+  z-index: 2;
+}
+
+/* Ensure content is above the animation */
+.content {
+  position: relative;
+  z-index: 10;
+} 

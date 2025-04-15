@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { User } from '../../../lib/models/User';
+import bcrypt from 'bcryptjs';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -27,10 +28,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    // Create new user
+    // Hash the password before creating the user
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create new user with hashed password
     const user = await User.create({
       email,
-      password,
+      password: hashedPassword,
       username,
     });
 
