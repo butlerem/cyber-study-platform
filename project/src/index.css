@@ -3,21 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --color-bg-primary: #0A0F1C;
-  --color-bg-secondary: #12121A;
-  --color-accent: #9580FF;
-  --color-accent-hover: #6E54C8;
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #111111;
+  --color-accent: #FFFFFF;
+  --color-accent-hover: #E5E5E5;
   --color-text: #FFFFFF;
   --color-text-secondary: #A0AEC0;
 }
 
-body {
-  background-color: var(--color-bg-primary);
-  color: var(--color-text);
+@layer base {
+  body {
+    @apply font-sans bg-primary text-white;
+  }
+  
+  code {
+    @apply font-mono;
+  }
 }
 
 .glow {
-  text-shadow: 0 0 20px rgba(149, 128, 255, 0.5);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .code-window {
@@ -40,9 +45,9 @@ body {
   border-radius: 50%;
 }
 
-.dot-red { background-color: #FF5F56; }
-.dot-yellow { background-color: #FFBD2E; }
-.dot-green { background-color: #27C93F; }
+.dot-red { background-color: #FFFFFF; }
+.dot-yellow { background-color: #FFFFFF; }
+.dot-green { background-color: #FFFFFF; }
 
 .gradient-border {
   position: relative;
@@ -70,11 +75,13 @@ body {
   color: var(--color-text);
   margin-top: 2em;
   margin-bottom: 1em;
+  font-weight: 600;
 }
 
 .prose p {
   margin-top: 1.25em;
   margin-bottom: 1.25em;
+  color: var(--color-text-secondary);
 }
 
 .prose code {
@@ -82,6 +89,7 @@ body {
   padding: 0.2em 0.4em;
   border-radius: 0.25em;
   font-size: 0.875em;
+  color: var(--color-text);
 }
 
 .prose pre {
@@ -95,6 +103,7 @@ body {
   background-color: transparent;
   padding: 0;
   border-radius: 0;
+  color: var(--color-text);
 }
 
 .prose ul {
@@ -102,6 +111,7 @@ body {
   padding-left: 1.5em;
   margin-top: 1.25em;
   margin-bottom: 1.25em;
+  color: var(--color-text-secondary);
 }
 
 .prose li {

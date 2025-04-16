@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
-import { User, Camera, Calendar, Mail, Edit2 } from 'lucide-react';
+import { User, Camera, Calendar, Mail, Edit2, X } from 'lucide-react';
+import Image from 'next/image';
 
 interface UserProgress {
   challengeId: string;
@@ -24,6 +25,7 @@ export default function Dashboard() {
   const [editingBio, setEditingBio] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [memberSince, setMemberSince] = useState<string>('');
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -44,7 +46,7 @@ export default function Dashboard() {
       if (storedProfile) {
         const profile = JSON.parse(storedProfile);
         setUsername(profile.username || 'Anonymous Hacker');
-        setBio(profile.bio || 'No bio yet. Click to add one!');
+        setBio(profile.bio || 'Click to add bio');
         setAvatarUrl(profile.avatar_url);
         setMemberSince(profile.member_since);
       } else {
@@ -54,7 +56,7 @@ export default function Dashboard() {
         
         const newProfile = {
           username: defaultUsername,
-          bio: 'No bio yet. Click to add one!',
+          bio: 'Click to add bio',
           avatar_url: null,
           member_since: now
         };
@@ -62,7 +64,7 @@ export default function Dashboard() {
         localStorage.setItem(`profile_${user.id}`, JSON.stringify(newProfile));
         
         setUsername(defaultUsername);
-        setBio('No bio yet. Click to add one!');
+        setBio('Click to add bio');
         setMemberSince(now);
       }
     } catch (err) {
@@ -132,9 +134,34 @@ export default function Dashboard() {
       localStorage.setItem(`profile_${user.id}`, JSON.stringify(profile));
       
       setAvatarUrl(fileUrl);
+      setShowAvatarModal(false);
     } catch (err) {
       console.error('Error uploading avatar:', err);
       setError('Failed to upload avatar. Please try again.');
+    }
+  };
+
+  const handleSelectIcon = (iconNumber: number) => {
+    if (!user) return;
+    
+    try {
+      const iconUrl = `/images/icon${iconNumber}.png`;
+      
+      // Get existing profile
+      const storedProfile = localStorage.getItem(`profile_${user.id}`);
+      const profile = storedProfile ? JSON.parse(storedProfile) : {};
+      
+      // Update avatar URL
+      profile.avatar_url = iconUrl;
+      
+      // Save back to localStorage
+      localStorage.setItem(`profile_${user.id}`, JSON.stringify(profile));
+      
+      setAvatarUrl(iconUrl);
+      setShowAvatarModal(false);
+    } catch (err) {
+      console.error('Error selecting icon:', err);
+      setError('Failed to select icon. Please try again.');
     }
   };
 
@@ -152,9 +179,65 @@ export default function Dashboard() {
         {
           challengeId: '2',
           title: 'XSS Attack Prevention',
+          completed: true,
+          completedAt: '2024-04-20',
+          points: 200
+        },
+        {
+          challengeId: '3',
+          title: 'CSRF Exploitation',
+          completed: false,
+          completedAt: null,
+          points: 150
+        },
+        {
+          challengeId: '4',
+          title: 'File Upload Vulnerabilities',
+          completed: false,
+          completedAt: null,
+          points: 150
+        },
+        {
+          challengeId: '5',
+          title: 'Advanced SQL Injection',
           completed: false,
           completedAt: null,
           points: 200
+        },
+        {
+          challengeId: '6',
+          title: 'Port Scanning Basics',
+          completed: false,
+          completedAt: null,
+          points: 100
+        },
+        {
+          challengeId: '7',
+          title: 'FTP Exploitation',
+          completed: false,
+          completedAt: null,
+          points: 100
+        },
+        {
+          challengeId: '8',
+          title: 'SMB Enumeration',
+          completed: false,
+          completedAt: null,
+          points: 150
+        },
+        {
+          challengeId: '9',
+          title: 'Caesar Cipher',
+          completed: false,
+          completedAt: null,
+          points: 100
+        },
+        {
+          challengeId: '10',
+          title: 'Vigenère Cipher',
+          completed: false,
+          completedAt: null,
+          points: 100
         }
       ];
       setProgress(mockProgress);
@@ -193,11 +276,9 @@ export default function Dashboard() {
     <Layout>
       <div className="min-h-screen bg-[#0A0F1C] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-extrabold text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
-              Dashboard
-            </h1>
-            <p className="mt-5 max-w-xl mx-auto text-xl text-gray-400">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-white mb-4">Dashboard</h1>
+            <p className="text-xl text-gray-400">
               Track your progress and achievements
             </p>
           </div>
@@ -215,10 +296,12 @@ export default function Dashboard() {
                         <User className="w-full h-full p-8 text-gray-400" />
                       )}
                     </div>
-                    <label className="absolute bottom-0 right-0 p-2 bg-[#9580FF] rounded-full cursor-pointer hover:bg-[#6E54C8] transition-colors">
+                    <button 
+                      onClick={() => setShowAvatarModal(true)}
+                      className="absolute bottom-0 right-0 p-2 bg-[#9580FF] rounded-full cursor-pointer hover:bg-[#6E54C8] transition-colors"
+                    >
                       <Camera className="w-4 h-4 text-white" />
-                      <input type="file" className="hidden" onChange={handleAvatarUpload} accept="image/*" />
-                    </label>
+                    </button>
                   </div>
                   <div className="text-center w-full">
                     {editing ? (
@@ -351,7 +434,19 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-700">
-                      {progress.map((item) => (
+                      {[...progress]
+                        .sort((a, b) => {
+                          // Sort by completed status (completed first)
+                          if (a.completed && !b.completed) return -1;
+                          if (!a.completed && b.completed) return 1;
+                          // Then sort by completion date (most recent first)
+                          if (a.completed && b.completed) {
+                            return new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime();
+                          }
+                          // Then sort by points (highest first)
+                          return b.points - a.points;
+                        })
+                        .map((item) => (
                         <tr key={item.challengeId} className="hover:bg-[#1A1F2E]">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                             {item.title}
@@ -360,9 +455,9 @@ export default function Dashboard() {
                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                               item.completed
                                 ? 'bg-green-500/10 text-green-500'
-                                : 'bg-yellow-500/10 text-yellow-500'
+                                : 'bg-gray-500/10 text-gray-400'
                             }`}>
-                              {item.completed ? 'Completed' : 'In Progress'}
+                              {item.completed ? 'Completed' : 'Not Started'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-[#9580FF]">
@@ -381,6 +476,58 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Avatar Selection Modal */}
+      {showAvatarModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#12121A] rounded-lg p-6 max-w-sm w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-white">Choose Profile Picture</h3>
+              <button 
+                onClick={() => setShowAvatarModal(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              {[1, 2, 3, 4].map((num) => (
+                <button
+                  key={num}
+                  onClick={() => handleSelectIcon(num)}
+                  className="flex justify-center items-center"
+                >
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#9580FF] hover:border-[#6E54C8] transition-colors">
+                    <img 
+                      src={`/images/icon${num}.png`} 
+                      alt={`Icon ${num}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+            
+            <div className="border-t border-gray-700 pt-4">
+              <label className="block w-full">
+                <span className="text-white mb-2 block">Or upload your own photo</span>
+                <input 
+                  type="file" 
+                  onChange={handleAvatarUpload} 
+                  accept="image/*" 
+                  className="block w-full text-sm text-gray-400
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-[#9580FF] file:text-white
+                    hover:file:bg-[#6E54C8]"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 } 

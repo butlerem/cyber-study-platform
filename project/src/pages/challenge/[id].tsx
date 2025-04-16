@@ -4,6 +4,8 @@ import { ArrowLeft, Server, Flag, CheckCircle, XCircle, Terminal, Code, Database
 import { useAuth } from '../../contexts/AuthContext';
 import ReactMarkdown from 'react-markdown';
 import Layout from '../../components/Layout';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface Challenge {
   id: string;
@@ -240,306 +242,359 @@ const params = [userInput];
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#0A0F1C] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <button
-            onClick={() => router.push('/challenges')}
-            className="flex items-center text-gray-400 hover:text-white mb-8"
-          >
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            Back to Challenges
-          </button>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700">
-                <div className="p-6">
-                  <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-white">{challenge.title}</h1>
-                    <span className={`px-3 py-1 rounded-full text-sm border ${
-                      challenge.difficulty === 'easy' ? 'bg-green-500/10 text-green-500 border-green-500' :
-                      challenge.difficulty === 'medium' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500' :
-                      'bg-red-500/10 text-red-500 border-red-500'
-                    }`}>
-                      {challenge.difficulty}
-                    </span>
-                  </div>
-                  
-                  <div className="mt-4">
-                    <p className="text-gray-400">{challenge.description}</p>
-                  </div>
+      <div className="min-h-screen bg-[#0A0F1C]">
+        <div className="py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <motion.button
+              onClick={() => router.push('/challenges')}
+              className="flex items-center text-gray-400 hover:text-white mb-12 group"
+              whileHover={{ x: -5 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
+              <ArrowLeft className="h-5 w-5 mr-2 transition-transform group-hover:scale-110" />
+              Back to Challenges
+            </motion.button>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2 space-y-8">
+                <motion.div 
+                  className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className="p-8">
+                    {/* Title and Difficulty */}
+                    <div className="flex items-center justify-between mb-6">
+                      <motion.h1 
+                        className="text-4xl font-bold text-white"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        {challenge.title}
+                      </motion.h1>
+                      <motion.span 
+                        className={`px-4 py-2 rounded-full text-sm font-medium border ${
+                          challenge.difficulty === 'easy' ? 'bg-green-500/10 text-green-500 border-green-500' :
+                          challenge.difficulty === 'medium' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500' :
+                          'bg-red-500/10 text-red-500 border-red-500'
+                        }`}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        {challenge.difficulty}
+                      </motion.span>
+                    </div>
 
-                  {/* Tabs */}
-                  <div className="mt-8 border-b border-gray-700">
-                    <nav className="flex space-x-8">
+                    {/* Challenge Image */}
+                    <div className="mb-6">
+                      <div className="relative w-full h-[400px]">
+                        <Image
+                          src="/images/cyberimage1.png"
+                          alt="SQL Injection visualization"
+                          className="rounded-lg"
+                          fill
+                          style={{ objectFit: 'contain' }}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    </div>
+
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <p className="text-gray-400 text-lg mb-8">{challenge.description}</p>
+                    </motion.div>
+
+                    {/* Tab Navigation */}
+                    <div className="flex space-x-4 mb-8">
                       <button
                         onClick={() => setActiveTab('overview')}
-                        className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                        className={`px-4 py-2 rounded-md transition-colors duration-200 ${
                           activeTab === 'overview'
-                            ? 'border-[#9580FF] text-[#9580FF]'
-                            : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                            ? 'bg-[#9580FF] text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-[#9580FF]/10'
                         }`}
                       >
                         Overview
                       </button>
                       <button
                         onClick={() => setActiveTab('solution')}
-                        className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                        className={`px-4 py-2 rounded-md transition-colors duration-200 ${
                           activeTab === 'solution'
-                            ? 'border-[#9580FF] text-[#9580FF]'
-                            : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+                            ? 'bg-[#9580FF] text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-[#9580FF]/10'
                         }`}
                       >
                         Solution
                       </button>
-                    </nav>
-                  </div>
+                    </div>
 
-                  {/* Tab Content */}
-                  <div className="mt-6">
-                    {activeTab === 'overview' && (
-                      <div className="space-y-8">
-                        {/* Overview Content */}
-                        <div className="prose prose-invert max-w-none">
-                          <ReactMarkdown>{challenge.content}</ReactMarkdown>
-                        </div>
-
-                        {/* Methodology Section */}
-                        {challenge.methodology && (
-                          <div className="mt-8">
-                            <h2 className="text-xl font-semibold text-white mb-4">Methodology</h2>
-                            <ol className="space-y-3">
-                              {challenge.methodology.steps.map((step, index) => (
-                                <li key={index} className="flex items-start">
-                                  <span className="flex items-center justify-center h-6 w-6 rounded-full bg-[#9580FF] text-white text-sm mr-3 mt-0.5">
-                                    {index + 1}
-                                  </span>
-                                  <span className="text-gray-300">{step}</span>
-                                </li>
-                              ))}
-                            </ol>
+                    {/* Tab Content */}
+                    <div className="mt-8">
+                      {activeTab === 'overview' ? (
+                        <motion.div 
+                          className="space-y-12"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.4 }}
+                        >
+                          {/* Overview Content */}
+                          <div className="prose prose-invert max-w-none">
+                            <ReactMarkdown>{challenge.content}</ReactMarkdown>
                           </div>
-                        )}
 
-                        {/* Code Examples Section */}
-                        {challenge.code_examples && (
-                          <div className="mt-8">
-                            <h2 className="text-xl font-semibold text-white mb-4">Code Examples</h2>
-                            <div className="space-y-6">
-                              {challenge.code_examples.map((example, index) => (
-                                <div key={index} className="bg-[#1A1A24] rounded-lg p-4 border border-gray-700">
-                                  <h3 className="text-lg font-medium text-white mb-2">{example.title}</h3>
-                                  <p className="text-gray-400 mb-4">{example.description}</p>
-                                  <div className="bg-[#0D1117] rounded p-4 overflow-x-auto">
+                          {/* Methodology Section */}
+                          {challenge.methodology && (
+                            <div>
+                              <h2 className="text-2xl font-bold text-white mb-6">Methodology</h2>
+                              <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                <ol className="space-y-4">
+                                  {challenge.methodology.steps.map((step, index) => (
+                                    <motion.li 
+                                      key={index} 
+                                      className="flex items-start"
+                                      initial={{ opacity: 0, x: -20 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: index * 0.1 }}
+                                    >
+                                      <span className="flex items-center justify-center h-8 w-8 rounded-full bg-[#9580FF] text-white text-lg font-medium mr-4 mt-0.5 flex-shrink-0">
+                                        {index + 1}
+                                      </span>
+                                      <span className="text-gray-300 text-lg">{step}</span>
+                                    </motion.li>
+                                  ))}
+                                </ol>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Code Examples Section */}
+                          {challenge.code_examples && (
+                            <div>
+                              <h2 className="text-2xl font-bold text-white mb-6">Code Examples</h2>
+                              <div className="space-y-6">
+                                {challenge.code_examples.map((example, index) => (
+                                  <motion.div 
+                                    key={index}
+                                    className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg overflow-hidden border border-gray-700"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                  >
+                                    <div className="p-4 border-b border-gray-700">
+                                      <h3 className="text-lg font-medium text-white">{example.title}</h3>
+                                      <p className="text-gray-400 mt-1">{example.description}</p>
+                                    </div>
+                                    <div className="p-4 bg-[#0D1117]">
+                                      <pre className="text-gray-300 font-mono text-sm">
+                                        <code>{example.code}</code>
+                                      </pre>
+                                    </div>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Hints Section */}
+                          <div>
+                            <h2 className="text-2xl font-bold text-white mb-6">Hints</h2>
+                            <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                              <ul className="space-y-4">
+                                {challenge.hints.map((hint, index) => (
+                                  <motion.li 
+                                    key={index} 
+                                    className="flex items-start"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.7 + index * 0.1 }}
+                                  >
+                                    <Info className="h-5 w-5 text-[#9580FF] mr-3 mt-1 flex-shrink-0" />
+                                    <span className="text-gray-300">{hint}</span>
+                                  </motion.li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ) : (
+                        <motion.div 
+                          className="space-y-8"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.4 }}
+                        >
+                          {/* Solution Content */}
+                          {showSolution && challenge.solution ? (
+                            <>
+                              <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4 mb-8">
+                                <div className="flex items-center">
+                                  <AlertTriangle className="h-5 w-5 text-yellow-500 mr-2" />
+                                  <p className="text-yellow-500">
+                                    You will receive {challenge.points / 2} points (50%) for completing this challenge after viewing the solution.
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="prose prose-invert max-w-none">
+                                <h2 className="text-2xl font-bold text-white mb-6">Solution Approach</h2>
+                                <p className="text-gray-300">{challenge.solution.approach}</p>
+                                
+                                <div className="mt-8">
+                                  <h3 className="text-xl font-bold text-white mb-4">Solution Code</h3>
+                                  <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
                                     <pre className="text-gray-300 font-mono text-sm">
-                                      <code>{example.code}</code>
+                                      <code>{challenge.solution.code}</code>
                                     </pre>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {activeTab === 'solution' && challenge.solution && (
-                      <div className="space-y-6">
-                        {!showSolution ? (
-                          <div className="bg-[#1A1A24] rounded-lg p-6 border border-yellow-500/30">
-                            <div className="flex items-start mb-4">
-                              <AlertTriangle className="h-6 w-6 text-yellow-500 mr-3 mt-0.5 flex-shrink-0" />
-                              <div>
-                                <h2 className="text-xl font-semibold text-white">Solution Warning</h2>
-                                <p className="text-gray-400 mt-2">
-                                  Viewing the solution will result in receiving only 50% of the challenge points.
-                                  This is to encourage learning through problem-solving rather than just copying solutions.
-                                </p>
-                                <p className="text-gray-400 mt-2">
-                                  Are you sure you want to view the solution?
-                                </p>
-                                <div className="mt-6 flex space-x-4">
-                                  <button
-                                    onClick={() => setShowSolution(true)}
-                                    className="bg-yellow-500/20 text-yellow-500 py-2 px-4 rounded-md hover:bg-yellow-500/30 transition-colors duration-200"
-                                  >
-                                    Yes, show solution
-                                  </button>
-                                  <button
-                                    onClick={() => setActiveTab('overview')}
-                                    className="bg-[#1A1A24] text-gray-400 py-2 px-4 rounded-md hover:bg-[#2A2A34] transition-colors duration-200"
-                                  >
-                                    No, go back
-                                  </button>
+                                
+                                <div className="mt-8">
+                                  <h3 className="text-xl font-bold text-white mb-4">Explanation</h3>
+                                  <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                    <p className="text-gray-300">{challenge.solution.explanation}</p>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-4 mb-6">
-                              <div className="flex items-start">
-                                <AlertTriangle className="h-5 w-5 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" />
-                                <p className="text-yellow-500 text-sm">
-                                  You are viewing the solution. You will receive only 50% of the challenge points ({Math.floor(challenge.points / 2)} points) for completing this challenge.
-                                </p>
+                            </>
+                          ) : (
+                            <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                              <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+                              <h3 className="text-xl font-bold text-white mb-4">View Solution?</h3>
+                              <p className="text-gray-400 mb-6">
+                                You will only receive 50% of the points ({challenge.points / 2} points) if you view the solution before solving the challenge.
+                              </p>
+                              <div className="flex justify-center gap-4">
+                                <button
+                                  onClick={() => setShowSolution(true)}
+                                  className="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-200"
+                                >
+                                  Yes, show solution
+                                </button>
+                                <button
+                                  onClick={() => setActiveTab('overview')}
+                                  className="bg-gray-700 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200"
+                                >
+                                  No, go back
+                                </button>
                               </div>
                             </div>
-                            
-                            <h2 className="text-xl font-semibold text-white mb-4">Solution</h2>
-                            <div className="bg-[#1A1A24] rounded-lg p-4 border border-gray-700">
-                              <h3 className="text-lg font-medium text-white mb-2">Approach</h3>
-                              <p className="text-gray-400">{challenge.solution.approach}</p>
-                            </div>
-                            <div className="bg-[#1A1A24] rounded-lg p-4 border border-gray-700">
-                              <h3 className="text-lg font-medium text-white mb-2">Exploit Code</h3>
-                              <div className="bg-[#0D1117] rounded p-4 overflow-x-auto">
-                                <pre className="text-gray-300 font-mono text-sm">
-                                  <code>{challenge.solution.code}</code>
-                                </pre>
-                              </div>
-                            </div>
-                            <div className="bg-[#1A1A24] rounded-lg p-4 border border-gray-700">
-                              <h3 className="text-lg font-medium text-white mb-2">Explanation</h3>
-                              <p className="text-gray-400">{challenge.solution.explanation}</p>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mt-8">
-                    <h2 className="text-xl font-semibold text-white mb-4">Hints</h2>
-                    <ul className="mt-2 space-y-2">
-                      {challenge.hints.map((hint, index) => (
-                        <li key={index} className="flex items-start">
-                          <Info className="h-5 w-5 text-[#9580FF] mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-400">{hint}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <form onSubmit={handleSubmit} className="mt-8">
-                    <div>
-                      <label htmlFor="flag" className="block text-sm font-medium text-gray-400">
-                        Submit Flag
-                      </label>
-                      <div className="mt-1">
-                        <input
-                          type="text"
-                          id="flag"
-                          value={flag}
-                          onChange={(e) => setFlag(e.target.value)}
-                          className="block w-full bg-[#1A1A24] border border-gray-700 rounded-md py-2 px-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#9580FF] focus:border-transparent"
-                          placeholder="Enter flag here..."
-                          disabled={submitting || submitSuccess}
-                        />
-                      </div>
+                          )}
+                        </motion.div>
+                      )}
                     </div>
+                  </div>
+                </motion.div>
 
-                    {submitError && (
-                      <div className="mt-2 text-red-500 text-sm flex items-center">
-                        <XCircle className="h-5 w-5 mr-2" />
-                        {submitError}
-                      </div>
-                    )}
-
-                    {submitSuccess && (
-                      <div className="mt-2 text-green-500 text-sm flex items-center">
-                        <CheckCircle className="h-5 w-5 mr-2" />
-                        Correct flag! Redirecting...
-                      </div>
-                    )}
-
-                    <div className="mt-4">
+                {/* Flag Submission */}
+                <motion.div 
+                  className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <div className="p-8">
+                    <h2 className="text-2xl font-bold text-white mb-6">Submit Flag</h2>
+                    <div className="flex gap-4">
+                      <input
+                        type="text"
+                        value={flag}
+                        onChange={(e) => setFlag(e.target.value)}
+                        placeholder="Enter the flag"
+                        className="flex-1 bg-[#1A1A24] border border-gray-700 rounded-md px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9580FF] focus:border-transparent"
+                      />
                       <button
-                        type="submit"
-                        disabled={submitting || submitSuccess}
-                        className="w-full bg-[#9580FF] text-white py-2 px-4 rounded-md hover:bg-[#6E54C8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={handleSubmit}
+                        disabled={submitting}
+                        className="bg-[#9580FF] text-white px-8 py-2 rounded-md hover:bg-[#6E54C8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {submitting ? 'Submitting...' : 'Submit Flag'}
+                        {submitting ? 'Submitting...' : 'Submit'}
                       </button>
                     </div>
-                  </form>
-                </div>
+                    {submitError && (
+                      <p className="mt-4 text-red-500">{submitError}</p>
+                    )}
+                    {submitSuccess && (
+                      <p className="mt-4 text-green-500">Congratulations! Flag is correct!</p>
+                    )}
+                  </div>
+                </motion.div>
               </div>
-            </div>
 
-            {/* Server Credentials Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700">
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <Server className="h-5 w-5 text-[#9580FF] mr-2" />
-                    <h2 className="text-xl font-semibold text-white">Server Access</h2>
-                  </div>
-                  
-                  {challenge.server_credentials ? (
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-400">Host</label>
-                        <div className="mt-1 bg-[#1A1A24] border border-gray-700 rounded-md py-2 px-3 text-white font-mono">
-                          {challenge.server_credentials.host}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-400">Port</label>
-                        <div className="mt-1 bg-[#1A1A24] border border-gray-700 rounded-md py-2 px-3 text-white font-mono">
-                          {challenge.server_credentials.port}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-400">Username</label>
-                        <div className="mt-1 bg-[#1A1A24] border border-gray-700 rounded-md py-2 px-3 text-white font-mono">
-                          {challenge.server_credentials.username}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-400">Password</label>
-                        <div className="mt-1 bg-[#1A1A24] border border-gray-700 rounded-md py-2 px-3 text-white font-mono">
-                          {challenge.server_credentials.password}
-                        </div>
-                      </div>
-                      
-                      <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-md">
-                        <div className="flex items-start">
-                          <AlertTriangle className="h-5 w-5 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" />
-                          <p className="text-yellow-500 text-sm">
-                            The server is only accessible from within the HackerLabs network. Make sure you're connected to the VPN before attempting to access it.
-                          </p>
-                        </div>
-                      </div>
+              {/* Sidebar */}
+              <div className="space-y-8">
+                {/* Challenge Info Card */}
+                <motion.div 
+                  className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <div className="p-8">
+                    <div className="flex items-center mb-6">
+                      <Database className="h-6 w-6 text-[#9580FF] mr-3" />
+                      <h2 className="text-2xl font-bold text-white">Challenge Info</h2>
                     </div>
-                  ) : (
-                    <p className="text-gray-400">No server credentials available for this challenge.</p>
-                  )}
-                </div>
-              </div>
-              
-              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 mt-6">
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <Database className="h-5 w-5 text-[#9580FF] mr-2" />
-                    <h2 className="text-xl font-semibold text-white">Challenge Info</h2>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400">Category</label>
-                      <div className="mt-1 text-white">{challenge.category}</div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400">Points</label>
-                      <div className="mt-1 text-white">{challenge.points} points</div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400">Difficulty</label>
-                      <div className="mt-1 text-white capitalize">{challenge.difficulty}</div>
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-2">Category</label>
+                        <div className="text-lg text-white font-medium">{challenge.category}</div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-2">Points</label>
+                        <div className="text-lg text-[#9580FF] font-bold">{challenge.points} points</div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-2">Difficulty</label>
+                        <div className="text-lg text-white font-medium capitalize">{challenge.difficulty}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
+
+                {/* Server Credentials Card */}
+                {challenge.server_credentials && (
+                  <motion.div 
+                    className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <div className="p-8">
+                      <div className="flex items-center mb-6">
+                        <Server className="h-6 w-6 text-[#9580FF] mr-3" />
+                        <h2 className="text-2xl font-bold text-white">Server Access</h2>
+                      </div>
+                      <div className="bg-[#1A1A24] rounded-lg p-4 font-mono text-sm">
+                        <div className="mb-4">
+                          <span className="text-gray-400">Host: </span>
+                          <span className="text-white">{challenge.server_credentials.host}</span>
+                        </div>
+                        <div className="mb-4">
+                          <span className="text-gray-400">Port: </span>
+                          <span className="text-white">{challenge.server_credentials.port}</span>
+                        </div>
+                        <div className="mb-4">
+                          <span className="text-gray-400">Username: </span>
+                          <span className="text-white">{challenge.server_credentials.username}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-400">Password: </span>
+                          <span className="text-white">{challenge.server_credentials.password}</span>
+                        </div>
+                      </div>
+                      <div className="mt-4 text-sm text-yellow-500">
+                        <AlertTriangle className="h-4 w-4 inline mr-2" />
+                        VPN connection required for access
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </div>
           </div>

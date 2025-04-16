@@ -29,7 +29,7 @@ export default function Login() {
 
   return (
     <Layout>
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0F1C] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
@@ -37,7 +37,7 @@ export default function Login() {
             </h2>
             <p className="mt-2 text-center text-sm text-gray-400">
               Or{' '}
-              <Link href="/register" className="font-medium text-[#9580FF] hover:text-[#6E54C8]">
+              <Link href="/register" className="font-medium text-white hover:text-gray-200">
                 create a new account
               </Link>
             </p>
@@ -59,7 +59,7 @@ export default function Login() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-[#12121A] placeholder-gray-500 text-white rounded-t-md focus:outline-none focus:ring-[#9580FF] focus:border-[#9580FF] focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-t-md focus:outline-none focus:ring-white focus:border-white focus:z-10 sm:text-sm"
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -75,7 +75,7 @@ export default function Login() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-[#12121A] placeholder-gray-500 text-white rounded-b-md focus:outline-none focus:ring-[#9580FF] focus:border-[#9580FF] focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-900 placeholder-gray-500 text-white rounded-b-md focus:outline-none focus:ring-white focus:border-white focus:z-10 sm:text-sm"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -83,13 +83,32 @@ export default function Login() {
               </div>
             </div>
 
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 text-white focus:ring-white border-gray-700 rounded bg-gray-900"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-400">
+                  Remember me
+                </label>
+              </div>
+
+              <div className="text-sm">
+                <a href="#" className="font-medium text-white hover:text-gray-200">
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+
             <div>
               <button
                 type="submit"
-                disabled={loading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#9580FF] hover:bg-[#6E54C8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9580FF]"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                Sign in
               </button>
             </div>
           </form>

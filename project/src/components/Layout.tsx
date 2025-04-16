@@ -9,7 +9,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-[#0A0F1C] text-white relative">
+    <div className="min-h-screen bg-black text-white relative">
       <CustomCursor />
       <Navbar />
       {children}

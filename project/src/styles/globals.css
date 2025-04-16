@@ -2,12 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Challenge page specific styles */
+.prose,
+.prose-invert,
+[class*="prose"],
+.bg-\[\#0A0F1C\] {
+  font-size: 0.9rem !important;
+}
+
+.prose h1,
+.prose-invert h1,
+[class*="prose"] h1,
+.bg-\[\#0A0F1C\] h1,
+h1.text-3xl,
+h1.text-4xl {
+  font-size: 1.5rem !important;
+}
+
+.prose h2,
+.prose-invert h2,
+[class*="prose"] h2,
+.bg-\[\#0A0F1C\] h2,
+h2.text-2xl {
+  font-size: 1.25rem !important;
+}
+
+.prose h3,
+.prose-invert h3,
+[class*="prose"] h3,
+.bg-\[\#0A0F1C\] h3,
+h3.text-xl {
+  font-size: 1.1rem !important;
+}
+
+.prose p,
+.prose-invert p,
+[class*="prose"] p,
+.bg-\[\#0A0F1C\] p,
+p.text-base,
+p.text-lg {
+  font-size: 0.9rem !important;
+}
+
+/* Additional challenge page elements */
+.bg-\[\#0A0F1C\] .text-white {
+  font-size: 0.9rem;
+}
+
+.bg-\[\#0A0F1C\] h1 {
+  font-size: 1.5rem;
+}
+
+.bg-\[\#0A0F1C\] h2 {
+  font-size: 1.25rem;
+}
+
+.bg-\[\#0A0F1C\] p {
+  font-size: 0.9rem;
+}
+
 /* Space Animation */
 @keyframes move-background {
   from {
     transform: translate3d(0px, 0px, 0px);
   }
-  to { 
+  to {
     transform: translate3d(1000px, 0px, 0px);
   }
 }
@@ -22,7 +87,7 @@
 }
 
 .stars {
-  background: #000 url('/images/stars.png') repeat top center;
+  background: #000 url("/images/stars.png") repeat top center;
   z-index: 0;
   position: absolute;
   top: 0;
@@ -31,6 +96,7 @@
   bottom: 0;
   z-index: 0;
   animation: move-background 50s linear infinite;
+  filter: grayscale(100%);
 }
 
 .twinkling {
@@ -40,19 +106,25 @@
   right: 0;
   bottom: 0;
   z-index: 1;
-  background: transparent url('/images/twinkling.png') repeat top center;
+  background: transparent url("/images/twinkling.png") repeat top center;
   animation: move-background 200s linear infinite;
+  filter: grayscale(100%);
 }
 
 /* Add a subtle gradient overlay to improve text readability */
-.stars::after, .twinkling::after {
+.stars::after,
+.twinkling::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(10, 15, 28, 0.7) 0%, rgba(10, 15, 28, 0.9) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
   z-index: 2;
 }
 
@@ -60,4 +132,4 @@
 .content {
   position: relative;
   z-index: 10;
-} 
+}
