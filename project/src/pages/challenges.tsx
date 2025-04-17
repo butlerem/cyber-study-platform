@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/authUtils";
 import {
   Filter,
   Search,

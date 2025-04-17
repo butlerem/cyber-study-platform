@@ -1,5 +1,20 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+export interface ChallengeInput {
+  title: string;
+  description: string;
+  content: string;
+  difficulty: "easy" | "medium" | "hard";
+  points: number;
+  flag: string;
+  server_credentials?: {
+    host: string;
+    port: number;
+    username: string;
+    password: string;
+  };
+}
+
 export async function getChallenges() {
   const response = await fetch(`${API_URL}/challenges`);
   if (!response.ok) {
@@ -8,7 +23,7 @@ export async function getChallenges() {
   return response.json();
 }
 
-export async function createChallenge(challenge: any) {
+export async function createChallenge(challenge: ChallengeInput) {
   const response = await fetch(`${API_URL}/challenges`, {
     method: "POST",
     headers: {
