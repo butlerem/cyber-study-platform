@@ -1,29 +1,31 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { useAuth } from '../contexts/AuthContext';
-import Layout from '../components/Layout';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useAuth } from "../contexts/authUtils";
+import Layout from "../components/Layout";
 
 export default function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       await signUp(email, password, username);
-      router.push('/dashboard');
+      router.push("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create an account');
+      setError(
+        err instanceof Error ? err.message : "Failed to create an account"
+      );
     } finally {
       setLoading(false);
     }
@@ -38,15 +40,21 @@ export default function Register() {
               Create your account
             </h2>
             <p className="mt-2 text-center text-sm text-gray-400">
-              Or{' '}
-              <Link href="/login" className="font-medium text-white hover:text-gray-200">
+              Or{" "}
+              <Link
+                href="/login"
+                className="font-medium text-white hover:text-gray-200"
+              >
                 sign in to your account
               </Link>
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded relative" role="alert">
+              <div
+                className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded relative"
+                role="alert"
+              >
                 <span className="block sm:inline">{error}</span>
               </div>
             )}
@@ -129,4 +137,4 @@ export default function Register() {
       </div>
     </Layout>
   );
-} 
+}

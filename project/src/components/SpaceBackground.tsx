@@ -1,20 +1,25 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 const SpaceBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    // Scene setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    containerRef.current.appendChild(renderer.domElement);
 
-    // Create particles
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesCount = 2000;
     const posArray = new Float32Array(particlesCount * 3);
@@ -23,21 +28,25 @@ const SpaceBackground: React.FC = () => {
       posArray[i] = (Math.random() - 0.5) * 5;
     }
 
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    particlesGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(posArray, 3)
+    );
 
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.005,
-      color: '#9580FF',
+      color: "#9580FF",
       transparent: true,
       opacity: 0.8,
     });
 
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    const particlesMesh = new THREE.Points(
+      particlesGeometry,
+      particlesMaterial
+    );
     scene.add(particlesMesh);
-
     camera.position.z = 2;
 
-    // Animation
     const animate = () => {
       requestAnimationFrame(animate);
       particlesMesh.rotation.y += 0.0005;
@@ -47,19 +56,17 @@ const SpaceBackground: React.FC = () => {
 
     animate();
 
-    // Handle resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
-    // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
-      containerRef.current?.removeChild(renderer.domElement);
+      window.removeEventListener("resize", handleResize);
+      container.removeChild(renderer.domElement);
       scene.remove(particlesMesh);
       particlesGeometry.dispose();
       particlesMaterial.dispose();
@@ -71,16 +78,16 @@ const SpaceBackground: React.FC = () => {
     <div
       ref={containerRef}
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
         zIndex: 0,
-        pointerEvents: 'none',
+        pointerEvents: "none",
       }}
     />
   );
 };
 
-export default SpaceBackground; 
+export default SpaceBackground;

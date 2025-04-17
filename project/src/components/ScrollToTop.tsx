@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from "react";
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -9,35 +9,43 @@ const ScrollToTop = () => {
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
-      
+
       // Calculate scroll progress percentage
       const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
       setScrollProgress(progress);
-      
+
       // Show button when scrolled down 20% of the page
       const shouldBeVisible = scrollTop > windowHeight * 0.2;
-      console.log('Scroll position:', scrollTop, 'Should be visible:', shouldBeVisible);
+      console.log(
+        "Scroll position:",
+        scrollTop,
+        "Should be visible:",
+        shouldBeVisible
+      );
       setIsVisible(shouldBeVisible);
     };
 
     // Add initial scroll check
     handleScroll();
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    console.log('Button clicked');
-    e.preventDefault();
-    e.stopPropagation();
-    
-    // Smooth scroll to top
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }, []);
+  const handleClick = useCallback(
+    (e: React.MouseEvent | React.KeyboardEvent) => {
+      console.log("Button clicked");
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Smooth scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    []
+  );
 
   const radius = 20;
   const circumference = 2 * Math.PI * radius;
@@ -47,15 +55,10 @@ const ScrollToTop = () => {
       onClick={handleClick}
       className={`fixed bottom-8 right-8 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm 
         flex items-center justify-center transition-all duration-300 hover:bg-white/20 cursor-pointer z-50
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          handleClick(e as any);
-        }
-      }}
-      style={{ pointerEvents: isVisible ? 'auto' : 'none' }}
+      style={{ pointerEvents: isVisible ? "auto" : "none" }}
     >
       <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none">
         <path
@@ -66,9 +69,12 @@ const ScrollToTop = () => {
           strokeLinejoin="round"
         />
       </svg>
-      
+
       {/* Progress circle */}
-      <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 48 48">
+      <svg
+        className="absolute inset-0 w-full h-full transform -rotate-90"
+        viewBox="0 0 48 48"
+      >
         <circle
           className="text-white/20"
           strokeWidth="2"
@@ -82,7 +88,9 @@ const ScrollToTop = () => {
           className="text-white"
           strokeWidth="2"
           strokeDasharray={circumference}
-          strokeDashoffset={circumference - (scrollProgress / 100) * circumference}
+          strokeDashoffset={
+            circumference - (scrollProgress / 100) * circumference
+          }
           strokeLinecap="round"
           stroke="currentColor"
           fill="transparent"
@@ -95,4 +103,4 @@ const ScrollToTop = () => {
   );
 };
 
-export default ScrollToTop; 
+export default ScrollToTop;

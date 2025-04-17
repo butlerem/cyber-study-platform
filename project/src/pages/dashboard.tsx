@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
-import { useAuth } from '../contexts/AuthContext';
-import { User, Camera, Calendar, Mail, Edit2, X } from 'lucide-react';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Layout from "../components/Layout";
+import { useAuth } from "../contexts/authUtils";
+import { User, Camera, Calendar, Mail, Edit2, X } from "lucide-react";
 
 interface UserProgress {
   challengeId: string;
@@ -18,79 +17,75 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [progress, setProgress] = useState<UserProgress[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [username, setUsername] = useState('');
-  const [bio, setBio] = useState('');
+  const [error, setError] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
   const [editing, setEditing] = useState(false);
   const [editingBio, setEditingBio] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [memberSince, setMemberSince] = useState<string>('');
+  const [memberSince, setMemberSince] = useState<string>("");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
-
   useEffect(() => {
     if (!user) {
-      router.push('/login');
+      router.push("/login");
       return;
     }
+
+    const fetchUserProfile = () => {
+      if (!user) return;
+
+      try {
+        const storedProfile = localStorage.getItem(`profile_${user.id}`);
+        if (storedProfile) {
+          const profile = JSON.parse(storedProfile);
+          setUsername(profile.username || "Anonymous Hacker");
+          setBio(profile.bio || "Click to add bio");
+          setAvatarUrl(profile.avatar_url);
+          setMemberSince(profile.member_since);
+        } else {
+          const defaultUsername =
+            user.email?.split("@")[0] || "Anonymous Hacker";
+          const now = new Date().toLocaleDateString();
+
+          const newProfile = {
+            username: defaultUsername,
+            bio: "Click to add bio",
+            avatar_url: null,
+            member_since: now,
+          };
+
+          localStorage.setItem(
+            `profile_${user.id}`,
+            JSON.stringify(newProfile)
+          );
+          setUsername(defaultUsername);
+          setBio("Click to add bio");
+          setMemberSince(now);
+        }
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        setError("Failed to load profile. Please try refreshing the page.");
+      }
+    };
+
     fetchProgress();
     fetchUserProfile();
-  }, [user]);
-
-  const fetchUserProfile = () => {
-    if (!user) return;
-    
-    try {
-      // Use localStorage to persist user profile data
-      const storedProfile = localStorage.getItem(`profile_${user.id}`);
-      
-      if (storedProfile) {
-        const profile = JSON.parse(storedProfile);
-        setUsername(profile.username || 'Anonymous Hacker');
-        setBio(profile.bio || 'Click to add bio');
-        setAvatarUrl(profile.avatar_url);
-        setMemberSince(profile.member_since);
-      } else {
-        // Create a new profile if none exists
-        const defaultUsername = user.email?.split('@')[0] || 'Anonymous Hacker';
-        const now = new Date().toLocaleDateString();
-        
-        const newProfile = {
-          username: defaultUsername,
-          bio: 'Click to add bio',
-          avatar_url: null,
-          member_since: now
-        };
-        
-        localStorage.setItem(`profile_${user.id}`, JSON.stringify(newProfile));
-        
-        setUsername(defaultUsername);
-        setBio('Click to add bio');
-        setMemberSince(now);
-      }
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-      setError('Failed to load profile. Please try refreshing the page.');
-    }
-  };
+  }, [user, router]);
 
   const handleUpdateUsername = () => {
     if (!user || !username.trim()) return;
 
     try {
-      // Get existing profile
       const storedProfile = localStorage.getItem(`profile_${user.id}`);
       const profile = storedProfile ? JSON.parse(storedProfile) : {};
-      
-      // Update username
+
       profile.username = username.trim();
-      
-      // Save back to localStorage
+
       localStorage.setItem(`profile_${user.id}`, JSON.stringify(profile));
-      
       setEditing(false);
     } catch (err) {
-      console.error('Error updating username:', err);
-      setError('Failed to update username. Please try again.');
+      console.error("Error updating username:", err);
+      setError("Failed to update username. Please try again.");
     }
   };
 
@@ -98,20 +93,16 @@ export default function Dashboard() {
     if (!user) return;
 
     try {
-      // Get existing profile
       const storedProfile = localStorage.getItem(`profile_${user.id}`);
       const profile = storedProfile ? JSON.parse(storedProfile) : {};
-      
-      // Update bio
+
       profile.bio = bio.trim();
-      
-      // Save back to localStorage
+
       localStorage.setItem(`profile_${user.id}`, JSON.stringify(profile));
-      
       setEditingBio(false);
     } catch (err) {
-      console.error('Error updating bio:', err);
-      setError('Failed to update bio. Please try again.');
+      console.error("Error updating bio:", err);
+      setError("Failed to update bio. Please try again.");
     }
   };
 
@@ -120,136 +111,75 @@ export default function Dashboard() {
     if (!file || !user) return;
 
     try {
-      // Create a URL for the uploaded file
       const fileUrl = URL.createObjectURL(file);
-      
-      // Get existing profile
+
       const storedProfile = localStorage.getItem(`profile_${user.id}`);
       const profile = storedProfile ? JSON.parse(storedProfile) : {};
-      
-      // Update avatar URL
+
       profile.avatar_url = fileUrl;
-      
-      // Save back to localStorage
+
       localStorage.setItem(`profile_${user.id}`, JSON.stringify(profile));
-      
+
       setAvatarUrl(fileUrl);
       setShowAvatarModal(false);
     } catch (err) {
-      console.error('Error uploading avatar:', err);
-      setError('Failed to upload avatar. Please try again.');
+      console.error("Error uploading avatar:", err);
+      setError("Failed to upload avatar. Please try again.");
     }
   };
 
   const handleSelectIcon = (iconNumber: number) => {
     if (!user) return;
-    
+
     try {
       const iconUrl = `/images/icon${iconNumber}.png`;
-      
-      // Get existing profile
+
       const storedProfile = localStorage.getItem(`profile_${user.id}`);
       const profile = storedProfile ? JSON.parse(storedProfile) : {};
-      
-      // Update avatar URL
+
       profile.avatar_url = iconUrl;
-      
-      // Save back to localStorage
+
       localStorage.setItem(`profile_${user.id}`, JSON.stringify(profile));
-      
+
       setAvatarUrl(iconUrl);
       setShowAvatarModal(false);
     } catch (err) {
-      console.error('Error selecting icon:', err);
-      setError('Failed to select icon. Please try again.');
+      console.error("Error selecting icon:", err);
+      setError("Failed to select icon. Please try again.");
     }
   };
 
   const fetchProgress = async () => {
     try {
-      // TODO: Replace with actual API call
       const mockProgress: UserProgress[] = [
-        {
-          challengeId: '1',
-          title: 'SQL Injection Basics',
-          completed: true,
-          completedAt: '2024-04-15',
-          points: 100
-        },
-        {
-          challengeId: '2',
-          title: 'XSS Attack Prevention',
-          completed: true,
-          completedAt: '2024-04-20',
-          points: 200
-        },
-        {
-          challengeId: '3',
-          title: 'CSRF Exploitation',
-          completed: false,
-          completedAt: null,
-          points: 150
-        },
-        {
-          challengeId: '4',
-          title: 'File Upload Vulnerabilities',
-          completed: false,
-          completedAt: null,
-          points: 150
-        },
-        {
-          challengeId: '5',
-          title: 'Advanced SQL Injection',
-          completed: false,
-          completedAt: null,
-          points: 200
-        },
-        {
-          challengeId: '6',
-          title: 'Port Scanning Basics',
-          completed: false,
-          completedAt: null,
-          points: 100
-        },
-        {
-          challengeId: '7',
-          title: 'FTP Exploitation',
-          completed: false,
-          completedAt: null,
-          points: 100
-        },
-        {
-          challengeId: '8',
-          title: 'SMB Enumeration',
-          completed: false,
-          completedAt: null,
-          points: 150
-        },
-        {
-          challengeId: '9',
-          title: 'Caesar Cipher',
-          completed: false,
-          completedAt: null,
-          points: 100
-        },
-        {
-          challengeId: '10',
-          title: 'Vigenère Cipher',
-          completed: false,
-          completedAt: null,
-          points: 100
-        }
+        // Mock progress data for testing
       ];
       setProgress(mockProgress);
     } catch (err) {
-      setError('Failed to load progress');
+      setError("Failed to load progress");
     } finally {
       setLoading(false);
     }
   };
 
-  const totalPoints = progress.reduce((sum, p) => sum + (p.completed ? p.points : 0), 0);
-  const completedChallenges = progress.filter(p => p.completed).length;
+  // Move sorting logic outside JSX for better performance
+  const sortedProgress = [...progress].sort((a, b) => {
+    if (a.completed && !b.completed) return -1;
+    if (!a.completed && b.completed) return 1;
+
+    if (a.completed && b.completed) {
+      const dateA = a.completedAt ? new Date(a.completedAt) : new Date(0);
+      const dateB = b.completedAt ? new Date(b.completedAt) : new Date(0);
+      return dateB.getTime() - dateA.getTime();
+    }
+    return b.points - a.points;
+  });
+
+  const totalPoints = progress.reduce(
+    (sum, p) => sum + (p.completed ? p.points : 0),
+    0
+  );
+  const completedChallenges = progress.filter((p) => p.completed).length;
   const totalChallenges = progress.length;
 
   if (loading) {
@@ -291,12 +221,16 @@ export default function Dashboard() {
                   <div className="relative mb-6">
                     <div className="w-32 h-32 rounded-full bg-[#1A1F2E] overflow-hidden">
                       {avatarUrl ? (
-                        <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
+                        <img
+                          src={avatarUrl}
+                          alt="Profile"
+                          className="w-full h-full object-cover"
+                        />
                       ) : (
                         <User className="w-full h-full p-8 text-gray-400" />
                       )}
                     </div>
-                    <button 
+                    <button
                       onClick={() => setShowAvatarModal(true)}
                       className="absolute bottom-0 right-0 p-2 bg-[#9580FF] rounded-full cursor-pointer hover:bg-[#6E54C8] transition-colors"
                     >
@@ -330,7 +264,9 @@ export default function Dashboard() {
                       </div>
                     ) : (
                       <div className="flex flex-col items-center">
-                        <h2 className="text-2xl font-bold text-center">{username || 'Anonymous Hacker'}</h2>
+                        <h2 className="text-2xl font-bold text-center">
+                          {username || "Anonymous Hacker"}
+                        </h2>
                         <button
                           onClick={() => setEditing(true)}
                           className="text-[#9580FF] hover:text-[#6E54C8] mt-1"
@@ -339,7 +275,7 @@ export default function Dashboard() {
                         </button>
                       </div>
                     )}
-                    
+
                     {/* Bio Section */}
                     <div className="mt-4 w-full">
                       {editingBio ? (
@@ -367,7 +303,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                       ) : (
-                        <div 
+                        <div
                           className="bg-[#1A1F2E] p-4 rounded-md text-gray-300 cursor-pointer hover:bg-[#2A2F3E] transition-colors"
                           onClick={() => setEditingBio(true)}
                         >
@@ -378,13 +314,13 @@ export default function Dashboard() {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Email Display - Moved under bio */}
                     <div className="mt-4 flex items-center justify-center text-gray-400">
                       <Mail className="w-4 h-4 mr-2" />
-                      <span>{user?.email || 'No email provided'}</span>
+                      <span>{user?.email || "No email provided"}</span>
                     </div>
-                    
+
                     <div className="mt-4 flex items-center justify-center text-gray-400">
                       <Calendar className="w-4 h-4 mr-2" />
                       <span>Member since {memberSince}</span>
@@ -398,23 +334,40 @@ export default function Dashboard() {
             <div className="w-full md:w-2/3">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-8">
                 <div className="bg-[#12121A] rounded-lg shadow-lg p-6">
-                  <h3 className="text-lg font-medium text-white">Total Points</h3>
-                  <p className="mt-2 text-3xl font-bold text-[#9580FF]">{totalPoints}</p>
-                </div>
-                <div className="bg-[#12121A] rounded-lg shadow-lg p-6">
-                  <h3 className="text-lg font-medium text-white">Challenges Completed</h3>
-                  <p className="mt-2 text-3xl font-bold text-[#9580FF]">{completedChallenges}/{totalChallenges}</p>
-                </div>
-                <div className="bg-[#12121A] rounded-lg shadow-lg p-6">
-                  <h3 className="text-lg font-medium text-white">Completion Rate</h3>
+                  <h3 className="text-lg font-medium text-white">
+                    Total Points
+                  </h3>
                   <p className="mt-2 text-3xl font-bold text-[#9580FF]">
-                    {totalChallenges > 0 ? Math.round((completedChallenges / totalChallenges) * 100) : 0}%
+                    {totalPoints}
+                  </p>
+                </div>
+                <div className="bg-[#12121A] rounded-lg shadow-lg p-6">
+                  <h3 className="text-lg font-medium text-white">
+                    Challenges Completed
+                  </h3>
+                  <p className="mt-2 text-3xl font-bold text-[#9580FF]">
+                    {completedChallenges}/{totalChallenges}
+                  </p>
+                </div>
+                <div className="bg-[#12121A] rounded-lg shadow-lg p-6">
+                  <h3 className="text-lg font-medium text-white">
+                    Completion Rate
+                  </h3>
+                  <p className="mt-2 text-3xl font-bold text-[#9580FF]">
+                    {totalChallenges > 0
+                      ? Math.round(
+                          (completedChallenges / totalChallenges) * 100
+                        )
+                      : 0}
+                    %
                   </p>
                 </div>
               </div>
 
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-white mb-6">Challenge Progress</h2>
+                <h2 className="text-2xl font-bold text-white mb-6">
+                  Challenge Progress
+                </h2>
                 <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden">
                   <table className="min-w-full divide-y divide-gray-700">
                     <thead>
@@ -434,37 +387,30 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-700">
-                      {[...progress]
-                        .sort((a, b) => {
-                          // Sort by completed status (completed first)
-                          if (a.completed && !b.completed) return -1;
-                          if (!a.completed && b.completed) return 1;
-                          // Then sort by completion date (most recent first)
-                          if (a.completed && b.completed) {
-                            return new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime();
-                          }
-                          // Then sort by points (highest first)
-                          return b.points - a.points;
-                        })
-                        .map((item) => (
-                        <tr key={item.challengeId} className="hover:bg-[#1A1F2E]">
+                      {sortedProgress.map((item) => (
+                        <tr
+                          key={item.challengeId}
+                          className="hover:bg-[#1A1F2E]"
+                        >
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                             {item.title}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              item.completed
-                                ? 'bg-green-500/10 text-green-500'
-                                : 'bg-gray-500/10 text-gray-400'
-                            }`}>
-                              {item.completed ? 'Completed' : 'Not Started'}
+                            <span
+                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                item.completed
+                                  ? "bg-green-500/10 text-green-500"
+                                  : "bg-gray-500/10 text-gray-400"
+                              }`}
+                            >
+                              {item.completed ? "Completed" : "Not Started"}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-[#9580FF]">
                             {item.points}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                            {item.completedAt || '-'}
+                            {item.completedAt || "-"}
                           </td>
                         </tr>
                       ))}
@@ -482,15 +428,17 @@ export default function Dashboard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-[#12121A] rounded-lg p-6 max-w-sm w-full">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-white">Choose Profile Picture</h3>
-              <button 
+              <h3 className="text-xl font-bold text-white">
+                Choose Profile Picture
+              </h3>
+              <button
                 onClick={() => setShowAvatarModal(false)}
                 className="text-gray-400 hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-6 mb-6">
               {[1, 2, 3, 4].map((num) => (
                 <button
@@ -499,23 +447,25 @@ export default function Dashboard() {
                   className="flex justify-center items-center"
                 >
                   <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#9580FF] hover:border-[#6E54C8] transition-colors">
-                    <img 
-                      src={`/images/icon${num}.png`} 
-                      alt={`Icon ${num}`} 
+                    <img
+                      src={`/images/icon${num}.png`}
+                      alt={`Icon ${num}`}
                       className="w-full h-full object-cover"
                     />
                   </div>
                 </button>
               ))}
             </div>
-            
+
             <div className="border-t border-gray-700 pt-4">
               <label className="block w-full">
-                <span className="text-white mb-2 block">Or upload your own photo</span>
-                <input 
-                  type="file" 
-                  onChange={handleAvatarUpload} 
-                  accept="image/*" 
+                <span className="text-white mb-2 block">
+                  Or upload your own photo
+                </span>
+                <input
+                  type="file"
+                  onChange={handleAvatarUpload}
+                  accept="image/*"
                   className="block w-full text-sm text-gray-400
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-md file:border-0
@@ -530,4 +480,4 @@ export default function Dashboard() {
       )}
     </Layout>
   );
-} 
+}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Terminal, Trophy, Layout, Users } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/authUtils";
 
 function Navbar() {
   const { user, signOut } = useAuth();

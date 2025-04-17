@@ -6,8 +6,10 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "typeRoots": ["node_modules/@types", "src/types"],
     "esModuleInterop": true,
+    "noEmitOnError": false,
+    "noEmit": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -19,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/global.d.ts"],
   "exclude": ["node_modules"]
 }
