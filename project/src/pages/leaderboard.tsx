@@ -9,7 +9,7 @@ interface LeaderboardEntry {
   rank: number;
   avatar: string | null;
   completedChallenges: number;
-  role: string;
+  bio: string;
 }
 
 export default function LeaderboardPage() {
@@ -20,72 +20,16 @@ export default function LeaderboardPage() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        // TODO: Replace with actual API call
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Using the same users from the home page with added stats
-        const mockLeaderboard: LeaderboardEntry[] = [
-          {
-            id: '1',
-            username: 'cyber_ninja_42',
-            points: 1250,
-            rank: 1,
-            avatar: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=cyber_ninja_42&backgroundColor=12121A&textureChance=100',
-            completedChallenges: 12,
-            role: 'Web Security Expert'
-          },
-          {
-            id: '2',
-            username: 'null.ptr',
-            points: 1180,
-            rank: 2,
-            avatar: null,
-            completedChallenges: 11,
-            role: 'System Hacker'
-          },
-          {
-            id: '3',
-            username: '0xDEADBEEF',
-            points: 1120,
-            rank: 3,
-            avatar: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=0xDEADBEEF&backgroundColor=12121A&textureChance=100',
-            completedChallenges: 10,
-            role: 'Reverse Engineer'
-          },
-          {
-            id: '4',
-            username: 'l33t_h4ck3r',
-            points: 1050,
-            rank: 4,
-            avatar: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=l33t_h4ck3r&backgroundColor=12121A&textureChance=100',
-            completedChallenges: 9,
-            role: 'CTF Champion'
-          },
-          {
-            id: '5',
-            username: 'ghost_in_the_shell',
-            points: 980,
-            rank: 5,
-            avatar: null,
-            completedChallenges: 8,
-            role: 'Network Security'
-          },
-          {
-            id: '6',
-            username: 'binary_wizard',
-            points: 920,
-            rank: 6,
-            avatar: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=binary_wizard&backgroundColor=12121A&textureChance=100',
-            completedChallenges: 7,
-            role: 'Binary Exploitation'
-          }
-        ];
-        
-        setLeaderboard(mockLeaderboard);
+        const response = await fetch("/api/user/leaderboard");
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.details || "Failed to fetch leaderboard data");
+        }
+        const data = await response.json();
+        setLeaderboard(data);
       } catch (error) {
-        console.error('Failed to fetch leaderboard:', error);
-        setError('Failed to load leaderboard data');
+        console.error("Error fetching leaderboard:", error);
+        setError(error instanceof Error ? error.message : "Failed to load leaderboard data");
       } finally {
         setLoading(false);
       }
@@ -109,7 +53,7 @@ export default function LeaderboardPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#0A0F1C] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-white">Leaderboard</h1>
@@ -123,67 +67,78 @@ export default function LeaderboardPage() {
           ) : error ? (
             <div className="text-center text-red-500">{error}</div>
           ) : (
-            <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-700">
-                  <thead>
-                    <tr className="bg-[#1A1A24]">
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Rank
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        User
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Points
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Challenges
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-700">
-                    {leaderboard.map((entry) => (
-                      <tr key={entry.id} className="hover:bg-[#1A1A24] transition-colors duration-150">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            {getRankIcon(entry.rank)}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="h-10 w-10 rounded-full overflow-hidden mr-3 border border-gray-700">
-                              {entry.avatar ? (
-                                <img 
-                                  src={entry.avatar} 
-                                  alt={entry.username} 
-                                  className="h-full w-full object-cover"
-                                />
-                              ) : (
-                                <div className="h-full w-full bg-[#1A1A24] flex items-center justify-center">
-                                  <User className="h-6 w-6 text-gray-400" />
-                                </div>
-                              )}
-                            </div>
-                            <div>
-                              <div className="text-sm font-medium text-white">{entry.username}</div>
-                              <div className="text-xs text-gray-400">{entry.role}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <div className="text-sm font-bold text-[#9580FF]">{entry.points}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <div className="text-sm text-gray-400">{entry.completedChallenges}</div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-8">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex items-center mb-6 md:mb-0">
+                  <Trophy className="h-12 w-12 text-white/60 mr-4" />
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">Leaderboard</h2>
+                    <p className="text-gray-400">Top performers in security challenges</p>
+                  </div>
+                </div>
+                <div className="text-center md:text-right">
+                  <div className="text-5xl font-bold text-white/60">{leaderboard.length}</div>
+                  <p className="text-gray-400 mt-2">Active Participants</p>
+                </div>
               </div>
             </div>
           )}
+
+          {/* Leaderboard Table */}
+          <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10">
+            <table className="min-w-full divide-y divide-white/10">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
+                    Rank
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
+                    User
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
+                    Points
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
+                    Challenges
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                {leaderboard.map((entry, index) => {
+                  // Debug: log avatar value
+                  console.log('Rendering avatar for', entry.username, 'avatar:', entry.avatar);
+                  return (
+                    <tr key={entry.id} className="hover:bg-white/5 transition-colors duration-300">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white/60">
+                        #{index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <img
+                              className="h-10 w-10 rounded-full"
+                              src={entry.avatar && typeof entry.avatar === 'string' && entry.avatar.trim() !== "" ? entry.avatar : "/images/default-avatar.svg"}
+                              alt={entry.username}
+                            />
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-white">{entry.username}</div>
+                            <div className="text-sm text-white/60">{entry.bio}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white/60">
+                        {entry.points}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white/60">
+                        {entry.completedChallenges}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </Layout>

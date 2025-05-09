@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   username: { type: String, required: true, unique: true },
+  image: { type: String, default: "/images/default-avatar.svg" },
+  bio: { type: String, default: "Security Enthusiast" },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
 });
@@ -14,8 +16,7 @@ userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   
   try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await argon2.hash(this.password);
     next();
   } catch (error) {
     next(error as Error);
@@ -24,7 +25,7 @@ userSchema.pre('save', async function(next) {
 
 // Method to compare passwords
 userSchema.methods.comparePassword = async function(candidatePassword: string) {
-  return bcrypt.compare(candidatePassword, this.password);
+  return argon2.verify(this.password, candidatePassword);
 };
 
 export const User = mongoose.models.User || mongoose.model('User', userSchema); 
