@@ -1,62 +1,58 @@
 import Link from "next/link";
-import { Terminal, Trophy, Layout, Users } from "lucide-react";
 import { useAuth } from "../contexts/authUtils";
+import { Code } from "lucide-react";
 
 function Navbar() {
   const { user, signOut } = useAuth();
 
   return (
-    <nav className="bg-[#0A0F1C] border-b border-[#1A1F2E]">
+    <nav>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <Terminal className="h-8 w-8 text-[#9580FF]" />
-              <span className="ml-2 text-xl font-bold">HackerLabs</span>
+            <Link href="/" className="flex items-center gap-2">
+              <Code className="h-6 w-6 text-[#9580FF]" />
+              <span className="text-2xl font-light tracking-tight">ExpLab</span>
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <Link
               href="/challenges"
-              className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
+              className="nav-link"
             >
-              <Layout className="h-5 w-5 mr-1" />
               <span>Challenges</span>
             </Link>
             <Link
               href="/leaderboard"
-              className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
+              className="nav-link"
             >
-              <Trophy className="h-5 w-5 mr-1" />
               <span>Leaderboard</span>
             </Link>
             <Link
               href="/community"
-              className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
+              className="nav-link"
             >
-              <Trophy className="h-5 w-5 mr-1" />
               <span>Community</span>
             </Link>
             {user ? (
               <>
                 <Link
                   href="/dashboard"
-                  className="flex items-center px-3 py-2 rounded-md hover:bg-[#1A1F2E]"
+                  className="nav-link"
                 >
-                  <Users className="h-5 w-5 mr-1" />
                   <span>Dashboard</span>
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="bg-[#9580FF] text-white px-4 py-2 rounded-md hover:bg-[#6E54C8] transition-colors"
+                  className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-colors duration-200 font-medium"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <Link
-                href="/login"
-                className="bg-[#9580FF] text-white px-4 py-2 rounded-md hover:bg-[#6E54C8] transition-colors"
+                href="/auth/signin"
+                className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-colors duration-200 font-medium"
               >
                 Login
               </Link>

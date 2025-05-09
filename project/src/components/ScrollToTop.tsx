@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,12 +17,6 @@ const ScrollToTop = () => {
 
       // Show button when scrolled down 20% of the page
       const shouldBeVisible = scrollTop > windowHeight * 0.2;
-      console.log(
-        "Scroll position:",
-        scrollTop,
-        "Should be visible:",
-        shouldBeVisible
-      );
       setIsVisible(shouldBeVisible);
     };
 
@@ -34,7 +29,6 @@ const ScrollToTop = () => {
 
   const handleClick = useCallback(
     (e: React.MouseEvent | React.KeyboardEvent) => {
-      console.log("Button clicked");
       e.preventDefault();
       e.stopPropagation();
 
@@ -51,14 +45,20 @@ const ScrollToTop = () => {
   const circumference = 2 * Math.PI * radius;
 
   return (
-    <div
+    <motion.div
       onClick={handleClick}
-      className={`fixed bottom-8 right-8 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm 
-        flex items-center justify-center transition-all duration-300 hover:bg-white/20 cursor-pointer z-50
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+      className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-[#9580FF]/20 backdrop-blur-sm 
+        flex items-center justify-center cursor-pointer z-50 border-2 border-[#9580FF] hover:border-[#9580FF]/80
+        hover:bg-[#9580FF]/30 transition-all duration-300"
       role="button"
       tabIndex={0}
       style={{ pointerEvents: isVisible ? "auto" : "none" }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ 
+        opacity: isVisible ? 1 : 0,
+        y: isVisible ? 0 : 20
+      }}
+      transition={{ duration: 0.3 }}
     >
       <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none">
         <path
@@ -76,7 +76,7 @@ const ScrollToTop = () => {
         viewBox="0 0 48 48"
       >
         <circle
-          className="text-white/20"
+          className="text-[#9580FF]/20"
           strokeWidth="2"
           stroke="currentColor"
           fill="transparent"
@@ -85,7 +85,7 @@ const ScrollToTop = () => {
           cy="24"
         />
         <circle
-          className="text-white"
+          className="text-[#9580FF]"
           strokeWidth="2"
           strokeDasharray={circumference}
           strokeDashoffset={
@@ -99,7 +99,7 @@ const ScrollToTop = () => {
           cy="24"
         />
       </svg>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface AnimatedCounterProps {
   end: number;
@@ -10,8 +11,8 @@ function AnimatedCounter({ end, className = "" }: AnimatedCounterProps) {
   
   useEffect(() => {
     let start = 0;
-    const duration = 1500;
-    const stepTime = Math.max(Math.floor(duration / end), 10);
+    const duration = 1500; // Animation duration in milliseconds
+    const stepTime = Math.max(Math.floor(duration / end), 10); // Minimum 10ms per step
 
     const counter = setInterval(() => {
       start += 1;
@@ -23,9 +24,14 @@ function AnimatedCounter({ end, className = "" }: AnimatedCounterProps) {
   }, [end]);
 
   return (
-    <div className={className}>
-      {count}+
-    </div>
+    <motion.div 
+      className={className}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      {count.toLocaleString()}
+    </motion.div>
   );
 }
 

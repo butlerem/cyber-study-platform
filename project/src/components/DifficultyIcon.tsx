@@ -6,35 +6,46 @@ interface DifficultyIconProps {
 }
 
 export default function DifficultyIcon({ difficulty, className = '' }: DifficultyIconProps) {
-  const getDifficultyColor = () => {
+  const getDifficultyStyles = () => {
     switch (difficulty) {
       case 'easy':
-        return 'text-green-500/70';
+        return {
+          background: 'bg-gradient-to-r from-green-500/10 to-emerald-500/10',
+          text: 'text-emerald-400',
+          border: 'border-emerald-500/30',
+          label: 'Easy'
+        };
       case 'medium':
-        return 'text-yellow-500/70';
+        return {
+          background: 'bg-gradient-to-r from-yellow-500/10 to-amber-500/10',
+          text: 'text-amber-400',
+          border: 'border-amber-500/30',
+          label: 'Medium'
+        };
       case 'hard':
-        return 'text-red-500/70';
+        return {
+          background: 'bg-gradient-to-r from-red-500/10 to-rose-500/10',
+          text: 'text-rose-400',
+          border: 'border-rose-500/30',
+          label: 'Hard'
+        };
       default:
-        return 'text-gray-500/70';
+        return {
+          background: 'bg-gradient-to-r from-gray-500/10 to-gray-600/10',
+          text: 'text-gray-400',
+          border: 'border-gray-500/30',
+          label: 'Unknown'
+        };
     }
   };
 
-  const getDifficultySize = () => {
-    switch (difficulty) {
-      case 'easy':
-        return 'h-3 w-3';
-      case 'medium':
-        return 'h-4 w-4';
-      case 'hard':
-        return 'h-5 w-5';
-      default:
-        return 'h-4 w-4';
-    }
-  };
+  const styles = getDifficultyStyles();
 
   return (
     <div className={`flex items-center ${className}`}>
-      <Circle className={`${getDifficultyColor()} ${getDifficultySize()}`} />
+      <div className={`px-3 py-1 rounded-full text-sm font-medium border ${styles.background} ${styles.text} ${styles.border}`}>
+        {styles.label}
+      </div>
     </div>
   );
 } 
