@@ -1,7 +1,7 @@
 // pages/challenge/[id].tsx
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ArrowLeft, Server, Database, AlertTriangle, Info } from "lucide-react";
+import { ArrowLeft, Server, Database, AlertTriangle, Info, Flag } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import Layout from "../../components/Layout";
 import { motion } from "framer-motion";
@@ -57,128 +57,14 @@ export default function ChallengePage() {
 
     const fetchChallenge = async () => {
       try {
-        // TODO: Replace with actual API call
-        const mockChallenge: Challenge = {
-          id: id as string,
-          title: "SQL Injection Basics",
-          description:
-            "Learn about SQL injection vulnerabilities and how to prevent them. Your task is to find the flag hidden in the database.",
-          content: `# SQL Injection Basics
-
-SQL injection is one of the most powerful and widely used web hacking techniques. It allows you to manipulate database queries to extract sensitive information, bypass authentication, and even take control of the entire database server.
-
-## What is SQL Injection?
-
-SQL injection is a web security vulnerability that lets you interfere with the queries an application makes to its database. When an application doesn't properly sanitize user input, you can inject malicious SQL code that the database will execute, giving you access to data you shouldn't have.
-
-## How to Exploit SQL Injection
-
-SQL injection attacks work by manipulating input fields to include SQL commands that the application will execute. This happens when user input is directly included in SQL queries without proper sanitization.
-
-### Common Attack Vectors:
-- Login forms
-- Search boxes
-- URL parameters
-- HTTP headers
-- Cookie values
-
-## Impact of Successful SQL Injection
-
-A successful SQL injection attack can:
-- Extract sensitive data (passwords, personal information, financial records)
-- Bypass authentication and gain unauthorized access
-- Modify or delete data in the database
-- Execute administrative operations on the database
-- In some cases, execute commands on the operating system
-
-## Prevention (What You Need to Know to Defend)
-
-To prevent SQL injection (and understand how to bypass these protections):
-- Parameterized queries (prepared statements)
-- Input validation and sanitization
-- Escape special characters
-- Use ORM frameworks
-- Implement proper access controls
-
-## Your Mission
-
-Your task is to find the flag hidden in the database by exploiting a SQL injection vulnerability. The flag is stored in a table called 'flags' with a column named 'flag'. Use your knowledge of SQL injection techniques to extract it.`,
-          difficulty: "easy",
-          points: 100,
-          flag: "flag{sql_injection_master}",
-          server_credentials: {
-            host: "10.10.10.123",
-            port: 80,
-            username: "********",
-            password: "********",
-          },
-          category: "Web Security",
-          hints: [
-            "Try using single quotes in the search field",
-            "Look for error messages that might reveal the database structure",
-            "The flag might be stored in a users table",
-          ],
-          code_examples: [
-            {
-              title: "Vulnerable Query",
-              description:
-                "This is an example of a vulnerable SQL query that is susceptible to SQL injection:",
-              code: `// Vulnerable code
-const query = "SELECT * FROM users WHERE username = '" + userInput + "'";
-
-// If userInput is "admin' --", the query becomes:
-// SELECT * FROM users WHERE username = 'admin' --'
-// This will return all users with username 'admin' and ignore the rest of the query`,
-              language: "javascript",
-            },
-            {
-              title: "Secure Query",
-              description:
-                "This is how to properly parameterize the query to prevent SQL injection:",
-              code: `// Secure code using parameterized query
-const query = "SELECT * FROM users WHERE username = ?";
-const params = [userInput];
-
-// Using a prepared statement with parameters
-// The database will treat the user input as data, not as SQL code`,
-              language: "javascript",
-            },
-            {
-              title: "Example Exploit",
-              description:
-                "Here's an example of how an attacker might exploit a SQL injection vulnerability:",
-              code: `// Original query: SELECT * FROM users WHERE username = 'user' AND password = 'pass'
-
-// Attacker input: username = "admin' --" and password = "anything"
-// Modified query: SELECT * FROM users WHERE username = 'admin' --' AND password = 'anything'
-// The -- comments out the rest of the query, bypassing the password check`,
-              language: "javascript",
-            },
-          ],
-          methodology: {
-            steps: [
-              "Identify input fields that interact with the database",
-              "Test for SQL injection vulnerabilities using various payloads",
-              "Analyze error messages for database information",
-              "Determine the database type and structure",
-              "Extract the flag from the database",
-            ],
-          },
-          solution: {
-            approach:
-              "The solution involves exploiting a SQL injection vulnerability in the search functionality.",
-            code: `// Payload to extract the flag
-' UNION SELECT flag FROM flags -- 
-
-// Or using error-based injection
-' AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(flag,':',FLOOR(RAND(0)*2))x FROM flags GROUP BY x)a) --`,
-            explanation:
-              "This payload exploits the SQL injection vulnerability to extract the flag from the database. The UNION SELECT statement combines the original query with a new query that selects the flag from the flags table.",
-          },
-        };
-        setChallenge(mockChallenge);
-      } catch (err: unknown) {
-        setError("Failed to load challenge");
+        const response = await fetch(`/api/challenges/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch challenge');
+        }
+        const data = await response.json();
+        setChallenge(data);
+      } catch (err) {
+        setError('Failed to load challenge');
       } finally {
         setLoading(false);
       }
@@ -235,7 +121,7 @@ const params = [userInput];
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#0A0F1C]">
+      <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
         <div className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <motion.button
@@ -252,7 +138,7 @@ const params = [userInput];
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-8">
                 <motion.div
-                  className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                  className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
@@ -284,20 +170,6 @@ const params = [userInput];
                       </motion.span>
                     </div>
 
-                    {/* Challenge Image */}
-                    <div className="mb-6">
-                      <div className="relative w-full h-[400px]">
-                        <Image
-                          src="/images/cyberimage1.png"
-                          alt="SQL Injection visualization"
-                          className="rounded-lg"
-                          fill
-                          style={{ objectFit: "contain" }}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      </div>
-                    </div>
-
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -312,27 +184,26 @@ const params = [userInput];
                     <div className="flex space-x-4 mb-8">
                       <button
                         onClick={() => setActiveTab("overview")}
-                        className={`px-4 py-2 rounded-md transition-colors duration-200 ${
+                        className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
                           activeTab === "overview"
-                            ? "bg-[#9580FF] text-white"
-                            : "text-gray-400 hover:text-white hover:bg-[#9580FF]/10"
+                            ? "bg-white/10 text-white border border-white/20"
+                            : "text-gray-400 hover:text-white"
                         }`}
                       >
                         Overview
                       </button>
                       <button
                         onClick={() => setActiveTab("solution")}
-                        className={`px-4 py-2 rounded-md transition-colors duration-200 ${
+                        className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
                           activeTab === "solution"
-                            ? "bg-[#9580FF] text-white"
-                            : "text-gray-400 hover:text-white hover:bg-[#9580FF]/10"
+                            ? "bg-white/10 text-white border border-white/20"
+                            : "text-gray-400 hover:text-white"
                         }`}
                       >
                         Solution
                       </button>
                     </div>
 
-                    {/* Tab Content */}
                     <div className="mt-8">
                       {activeTab === "overview" ? (
                         <motion.div
@@ -347,12 +218,12 @@ const params = [userInput];
                           </div>
 
                           {/* Methodology Section */}
-                          {challenge.methodology && (
+                          {challenge.methodology && challenge.methodology.steps && challenge.methodology.steps.length > 0 && (
                             <div>
                               <h2 className="text-2xl font-bold text-white mb-6">
                                 Methodology
                               </h2>
-                              <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                              <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
                                 <ol className="space-y-4">
                                   {challenge.methodology.steps.map(
                                     (step, index) => (
@@ -378,7 +249,7 @@ const params = [userInput];
                           )}
 
                           {/* Code Examples Section */}
-                          {challenge.code_examples && (
+                          {challenge.code_examples && challenge.code_examples.length > 0 && (
                             <div>
                               <h2 className="text-2xl font-bold text-white mb-6">
                                 Code Examples
@@ -388,12 +259,12 @@ const params = [userInput];
                                   (example, index) => (
                                     <motion.div
                                       key={index}
-                                      className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg overflow-hidden border border-gray-700"
+                                      className="bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors duration-300"
                                       initial={{ opacity: 0, y: 20 }}
                                       animate={{ opacity: 1, y: 0 }}
                                       transition={{ delay: index * 0.1 }}
                                     >
-                                      <div className="p-4 border-b border-gray-700">
+                                      <div className="p-4 border-b border-white/10">
                                         <h3 className="text-lg font-medium text-white">
                                           {example.title}
                                         </h3>
@@ -401,7 +272,7 @@ const params = [userInput];
                                           {example.description}
                                         </p>
                                       </div>
-                                      <div className="p-4 bg-[#0D1117]">
+                                      <div className="p-4 bg-black/40">
                                         <pre className="text-gray-300 font-mono text-sm">
                                           <code>{example.code}</code>
                                         </pre>
@@ -414,29 +285,31 @@ const params = [userInput];
                           )}
 
                           {/* Hints Section */}
-                          <div>
-                            <h2 className="text-2xl font-bold text-white mb-6">
-                              Hints
-                            </h2>
-                            <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                              <ul className="space-y-4">
+                          {challenge.hints && challenge.hints.length > 0 && (
+                            <div>
+                              <h2 className="text-2xl font-bold text-white mb-6">
+                                Hints
+                              </h2>
+                              <div className="space-y-4">
                                 {challenge.hints.map((hint, index) => (
-                                  <motion.li
+                                  <motion.div
                                     key={index}
-                                    className="flex items-start"
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.7 + index * 0.1 }}
+                                    className="bg-black/20 backdrop-blur-sm rounded-lg p-4 border border-white/10 hover:border-white/20 transition-colors duration-300"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
                                   >
-                                    <Info className="h-5 w-5 text-[#9580FF] mr-3 mt-1 flex-shrink-0" />
-                                    <span className="text-gray-300">
-                                      {hint}
-                                    </span>
-                                  </motion.li>
+                                    <div className="flex items-start">
+                                      <span className="flex items-center justify-center h-8 w-8 rounded-full bg-[#9580FF] text-white text-lg font-medium mr-4 mt-0.5 flex-shrink-0">
+                                        {index + 1}
+                                      </span>
+                                      <p className="text-gray-300">{hint}</p>
+                                    </div>
+                                  </motion.div>
                                 ))}
-                              </ul>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </motion.div>
                       ) : (
                         <motion.div
@@ -470,7 +343,7 @@ const params = [userInput];
                                   <h3 className="text-xl font-bold text-white mb-4">
                                     Solution Code
                                   </h3>
-                                  <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                  <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
                                     <pre className="text-gray-300 font-mono text-sm">
                                       <code>{challenge.solution.code}</code>
                                     </pre>
@@ -481,7 +354,7 @@ const params = [userInput];
                                   <h3 className="text-xl font-bold text-white mb-4">
                                     Explanation
                                   </h3>
-                                  <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                  <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
                                     <p className="text-gray-300">
                                       {challenge.solution.explanation}
                                     </p>
@@ -490,73 +363,27 @@ const params = [userInput];
                               </div>
                             </>
                           ) : (
-                            <div className="bg-[#1A1A24]/80 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
-                              <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-                              <h3 className="text-xl font-bold text-white mb-4">
-                                View Solution?
+                            <div className="text-center py-12">
+                              <Info className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                              <h3 className="text-xl font-bold text-white mb-2">
+                                View Solution
                               </h3>
                               <p className="text-gray-400 mb-6">
-                                You will only receive 50% of the points (
-                                {challenge.points / 2} points) if you view the
-                                solution before solving the challenge.
+                                Are you sure you want to view the solution? You'll
+                                receive 50% of the points if you complete the
+                                challenge after viewing the solution.
                               </p>
-                              <div className="flex justify-center gap-4">
-                                <button
-                                  onClick={() => setShowSolution(true)}
-                                  className="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-200"
-                                >
-                                  Yes, show solution
-                                </button>
-                                <button
-                                  onClick={() => setActiveTab("overview")}
-                                  className="bg-gray-700 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200"
-                                >
-                                  No, go back
-                                </button>
-                              </div>
+                              <button
+                                onClick={() => setShowSolution(true)}
+                                className="bg-[#9580FF]/20 hover:bg-[#9580FF]/30 text-white px-6 py-3 rounded-lg transition-colors duration-300"
+                              >
+                                Show Solution
+                              </button>
                             </div>
                           )}
                         </motion.div>
                       )}
                     </div>
-                  </div>
-                </motion.div>
-
-                {/* Flag Submission */}
-                <motion.div
-                  className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  <div className="p-8">
-                    <h2 className="text-2xl font-bold text-white mb-6">
-                      Submit Flag
-                    </h2>
-                    <div className="flex gap-4">
-                      <input
-                        type="text"
-                        value={flag}
-                        onChange={(e) => setFlag(e.target.value)}
-                        placeholder="Enter the flag"
-                        className="flex-1 bg-[#1A1A24] border border-gray-700 rounded-md px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9580FF] focus:border-transparent"
-                      />
-                      <button
-                        onClick={handleSubmit}
-                        disabled={submitting}
-                        className="bg-[#9580FF] text-white px-8 py-2 rounded-md hover:bg-[#6E54C8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {submitting ? "Submitting..." : "Submit"}
-                      </button>
-                    </div>
-                    {submitError && (
-                      <p className="mt-4 text-red-500">{submitError}</p>
-                    )}
-                    {submitSuccess && (
-                      <p className="mt-4 text-green-500">
-                        Congratulations! Flag is correct!
-                      </p>
-                    )}
                   </div>
                 </motion.div>
               </div>
@@ -565,7 +392,7 @@ const params = [userInput];
               <div className="space-y-8">
                 {/* Challenge Info Card */}
                 <motion.div
-                  className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                  className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors duration-300"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
@@ -606,13 +433,13 @@ const params = [userInput];
                   </div>
                 </motion.div>
 
-                {/* Server Credentials Card */}
+                {/* Server Access Card */}
                 {challenge.server_credentials && (
                   <motion.div
-                    className="bg-[#12121A]/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors duration-300"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 }}
+                    transition={{ delay: 0.5 }}
                   >
                     <div className="p-8">
                       <div className="flex items-center mb-6">
@@ -621,39 +448,86 @@ const params = [userInput];
                           Server Access
                         </h2>
                       </div>
-                      <div className="bg-[#1A1A24] rounded-lg p-4 font-mono text-sm">
-                        <div className="mb-4">
-                          <span className="text-gray-400">Host: </span>
-                          <span className="text-white">
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-2">
+                            Host
+                          </label>
+                          <div className="text-white font-mono">
                             {challenge.server_credentials.host}
-                          </span>
-                        </div>
-                        <div className="mb-4">
-                          <span className="text-gray-400">Port: </span>
-                          <span className="text-white">
-                            {challenge.server_credentials.port}
-                          </span>
-                        </div>
-                        <div className="mb-4">
-                          <span className="text-gray-400">Username: </span>
-                          <span className="text-white">
-                            {challenge.server_credentials.username}
-                          </span>
+                          </div>
                         </div>
                         <div>
-                          <span className="text-gray-400">Password: </span>
-                          <span className="text-white">
-                            {challenge.server_credentials.password}
-                          </span>
+                          <label className="block text-sm font-medium text-gray-400 mb-2">
+                            Port
+                          </label>
+                          <div className="text-white font-mono">
+                            {challenge.server_credentials.port}
+                          </div>
                         </div>
-                      </div>
-                      <div className="mt-4 text-sm text-yellow-500">
-                        <AlertTriangle className="h-4 w-4 inline mr-2" />
-                        VPN connection required for access
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-2">
+                            Username
+                          </label>
+                          <div className="text-white font-mono">
+                            {challenge.server_credentials.username}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-2">
+                            Password
+                          </label>
+                          <div className="text-white font-mono">
+                            {challenge.server_credentials.password}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
                 )}
+
+                {/* Flag Submission Card */}
+                <motion.div
+                  className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors duration-300"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <div className="p-8">
+                    <div className="flex items-center mb-6">
+                      <Flag className="h-6 w-6 text-[#9580FF] mr-3" />
+                      <h2 className="text-2xl font-bold text-white">
+                        Submit Flag
+                      </h2>
+                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div>
+                        <input
+                          type="text"
+                          value={flag}
+                          onChange={(e) => setFlag(e.target.value)}
+                          placeholder="Enter flag"
+                          className="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#9580FF] transition-colors duration-300"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="btn-secondary w-full"
+                      >
+                        {submitting ? "Submitting..." : "Submit Flag"}
+                      </button>
+                      {submitError && (
+                        <p className="text-red-500 text-sm">{submitError}</p>
+                      )}
+                      {submitSuccess && (
+                        <p className="text-green-500 text-sm">
+                          Flag submitted successfully!
+                        </p>
+                      )}
+                    </form>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </div>

@@ -15,33 +15,13 @@ import {
 import DifficultyIcon from "../components/DifficultyIcon";
 
 interface Challenge {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   difficulty: "easy" | "medium" | "hard";
   points: number;
   category: string;
   completed?: boolean;
-  content?: {
-    overview: string;
-    prerequisites: string[];
-    setup: string;
-    serverInfo?: {
-      ip: string;
-      ports: string[];
-      credentials?: {
-        username: string;
-        password: string;
-      };
-    };
-    examples: {
-      title: string;
-      description: string;
-      code: string;
-      explanation: string;
-    }[];
-    hints: string[];
-  };
 }
 
 type DifficultyFilter = "all" | "easy" | "medium" | "hard";
@@ -61,405 +41,12 @@ export default function ChallengesPage() {
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
-        // TODO: Replace with actual API call
-        const mockChallenges: Challenge[] = [
-          // Getting Started Challenges
-          {
-            id: "getting-started-1",
-            title: "Setting Up Your Pentesting Environment",
-            description:
-              "Learn how to set up a proper ethical hacking environment with Kali Linux and essential tools.",
-            difficulty: "easy",
-            points: 50,
-            category: "getting-started",
-            completed: false,
-            content: {
-              overview: `Setting up a proper pentesting environment is the first step in your ethical hacking journey. This challenge will guide you through the process of setting up Kali Linux, configuring your tools, and understanding the basics of ethical hacking.`,
-              prerequisites: [
-                "Basic computer knowledge",
-                "Understanding of operating systems",
-                "Familiarity with command line interfaces",
-              ],
-              setup: `1. Download and install Kali Linux (or use a pre-configured VM)
-2. Configure your network settings
-3. Update your system and tools
-4. Install additional recommended tools
-5. Set up a practice environment`,
-              serverInfo: {
-                ip: "10.10.10.100",
-                ports: ["22"],
-                credentials: {
-                  username: "kali",
-                  password: "kali",
-                },
-              },
-              examples: [
-                {
-                  title: "Basic Kali Linux Commands",
-                  description:
-                    "Essential commands to get started with Kali Linux:",
-                  code: `# Update system
-sudo apt update && sudo apt upgrade -y
-
-# Install additional tools
-sudo apt install -y nmap metasploit-framework burpsuite
-
-# Check network configuration
-ifconfig
-ip addr show
-
-# Basic reconnaissance
-nmap -sV 10.10.10.1`,
-                  explanation:
-                    "These commands help you update your system, install essential tools, check your network configuration, and perform basic reconnaissance.",
-                },
-              ],
-              hints: [
-                "Make sure your network adapter is properly configured in bridge mode",
-                "Update your system before installing additional tools",
-                "Check that your tools are working correctly by running them with --help",
-                "Document your setup process for future reference",
-              ],
-            },
-          },
-          {
-            id: "getting-started-2",
-            title: "Basic Reconnaissance Techniques",
-            description:
-              "Master the fundamentals of information gathering and reconnaissance in ethical hacking.",
-            difficulty: "easy",
-            points: 50,
-            category: "getting-started",
-            completed: false,
-            content: {
-              overview: `Reconnaissance is the first phase of any penetration test. This challenge will teach you the basics of passive and active reconnaissance techniques, including DNS enumeration, port scanning, and service identification.`,
-              prerequisites: [
-                'Completed "Setting Up Your Pentesting Environment" challenge',
-                "Basic understanding of networking concepts",
-                "Familiarity with command line tools",
-              ],
-              setup: `1. Ensure your Kali Linux environment is properly configured
-2. Install additional reconnaissance tools if needed
-3. Set up a target system for practice
-4. Configure your network to allow scanning`,
-              serverInfo: {
-                ip: "10.10.10.101",
-                ports: ["22"],
-                credentials: {
-                  username: "kali",
-                  password: "kali",
-                },
-              },
-              examples: [
-                {
-                  title: "Basic Reconnaissance Commands",
-                  description: "Essential commands for information gathering:",
-                  code: `# DNS enumeration
-dig example.com
-whois example.com
-
-# Port scanning with nmap
-nmap -sS -sV -p- 10.10.10.1
-
-# Service enumeration
-enum4linux -a 10.10.10.1
-
-# Web reconnaissance
-dirb http://10.10.10.1`,
-                  explanation:
-                    "These commands help you gather information about your target, including DNS records, open ports, running services, and web directories.",
-                },
-              ],
-              hints: [
-                "Start with passive reconnaissance before moving to active techniques",
-                "Use multiple tools to cross-reference your findings",
-                "Document everything you discover",
-                "Be mindful of scanning policies and legal considerations",
-              ],
-            },
-          },
-          {
-            id: "getting-started-3",
-            title: "Introduction to Exploitation",
-            description:
-              "Learn the basics of vulnerability assessment and exploitation in a controlled environment.",
-            difficulty: "easy",
-            points: 50,
-            category: "getting-started",
-            completed: false,
-            content: {
-              overview: `Exploitation is the process of taking advantage of vulnerabilities to gain unauthorized access to systems. This challenge introduces you to the basics of vulnerability assessment and exploitation in a safe, controlled environment.`,
-              prerequisites: [
-                'Completed "Basic Reconnaissance Techniques" challenge',
-                "Understanding of common vulnerabilities",
-                "Familiarity with Metasploit Framework",
-              ],
-              setup: `1. Ensure your Kali Linux environment is properly configured
-2. Install Metasploit Framework if not already installed
-3. Set up a vulnerable target system for practice
-4. Configure your network to allow exploitation`,
-              serverInfo: {
-                ip: "10.10.10.102",
-                ports: ["22"],
-                credentials: {
-                  username: "kali",
-                  password: "kali",
-                },
-              },
-              examples: [
-                {
-                  title: "Basic Exploitation with Metasploit",
-                  description:
-                    "Essential commands for using Metasploit Framework:",
-                  code: `# Start Metasploit
-msfconsole
-
-# Search for exploits
-search exploit windows smb
-
-# Select an exploit
-use exploit/windows/smb/ms17_010_eternalblue
-
-# Set target
-set RHOST 10.10.10.1
-
-# Run the exploit
-exploit
-
-# Post-exploitation
-shell
-whoami
-ipconfig`,
-                  explanation:
-                    "These commands demonstrate the basic workflow of using Metasploit Framework to exploit a vulnerability and gain access to a target system.",
-                },
-              ],
-              hints: [
-                "Always start with information gathering before attempting exploitation",
-                "Use the search function in Metasploit to find relevant exploits",
-                "Set all required options before running an exploit",
-                "Document your exploitation process for learning purposes",
-              ],
-            },
-          },
-
-          // Web Security Challenges
-          {
-            id: "web-1",
-            title: "SQL Injection Basics",
-            description:
-              "Learn about SQL injection vulnerabilities and how to prevent them.",
-            difficulty: "easy",
-            points: 100,
-            category: "web",
-            completed: false,
-            content: {
-              overview: `SQL Injection (SQLi) is a web security vulnerability that allows attackers to interfere with the queries that an application makes to its database. This can allow attackers to view data that they are not normally able to retrieve, modify data, and potentially take control of the server.`,
-              prerequisites: [
-                "Basic understanding of SQL",
-                "Knowledge of web applications",
-                "Familiarity with HTTP requests",
-              ],
-              setup: `1. Download and install the vulnerable web application
-2. Configure your local environment
-3. Start the application server
-4. Access the application through your browser`,
-              serverInfo: {
-                ip: "10.10.10.123",
-                ports: ["80", "3306"],
-                credentials: {
-                  username: "admin",
-                  password: "super_secure_password_123!",
-                },
-              },
-              examples: [
-                {
-                  title: "Basic SQL Injection",
-                  description:
-                    "A simple login form vulnerable to SQL injection",
-                  code: `// Vulnerable code
-$query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-$result = mysqli_query($conn, $query);
-
-// Malicious input
-username: admin' --
-password: anything
-
-// Resulting query
-SELECT * FROM users WHERE username = 'admin' --' AND password = 'anything'`,
-                  explanation:
-                    "The comment operator (--) causes the rest of the query to be ignored, bypassing the password check.",
-                },
-                {
-                  title: "Union-Based SQL Injection",
-                  description: "Using UNION to extract data from other tables",
-                  code: `// Vulnerable code
-$query = "SELECT id, name, email FROM users WHERE id = $id";
-$result = mysqli_query($conn, $query);
-
-// Malicious input
-id: 1 UNION SELECT 1, username, password FROM admin_users
-
-// Resulting query
-SELECT id, name, email FROM users WHERE id = 1 UNION SELECT 1, username, password FROM admin_users`,
-                  explanation:
-                    "The UNION operator allows us to combine results from multiple SELECT statements, potentially exposing sensitive data.",
-                },
-              ],
-              hints: [
-                "Try using the comment operator (--) to bypass authentication",
-                "Look for error messages that might reveal the database structure",
-                "Consider using UNION-based attacks to extract data",
-                "Remember to URL encode special characters",
-              ],
-            },
-          },
-          {
-            id: "web-2",
-            title: "XSS Attack Lab",
-            description:
-              "Practice identifying and exploiting Cross-Site Scripting vulnerabilities.",
-            difficulty: "medium",
-            points: 150,
-            category: "web",
-            completed: false,
-          },
-          {
-            id: "web-3",
-            title: "CSRF Exploitation",
-            description:
-              "Understand Cross-Site Request Forgery attacks and their impact.",
-            difficulty: "easy",
-            points: 100,
-            category: "web",
-            completed: false,
-          },
-          {
-            id: "web-4",
-            title: "File Upload Vulnerabilities",
-            description:
-              "Learn about insecure file upload mechanisms and how to exploit them.",
-            difficulty: "medium",
-            points: 150,
-            category: "web",
-            completed: false,
-          },
-          {
-            id: "web-5",
-            title: "Advanced SQL Injection",
-            description:
-              "Master advanced SQL injection techniques and bypass security measures.",
-            difficulty: "hard",
-            points: 200,
-            category: "web",
-            completed: false,
-          },
-
-          // Network Security Challenges
-          {
-            id: "network-1",
-            title: "Port Scanning Basics",
-            description:
-              "Learn the fundamentals of port scanning and service enumeration.",
-            difficulty: "easy",
-            points: 100,
-            category: "network",
-            completed: false,
-          },
-          {
-            id: "network-2",
-            title: "FTP Exploitation",
-            description:
-              "Identify and exploit common FTP server vulnerabilities.",
-            difficulty: "easy",
-            points: 100,
-            category: "network",
-            completed: false,
-          },
-          {
-            id: "network-3",
-            title: "SMB Enumeration",
-            description:
-              "Learn to enumerate SMB shares and identify misconfigurations.",
-            difficulty: "medium",
-            points: 150,
-            category: "network",
-            completed: false,
-          },
-          {
-            id: "network-4",
-            title: "SSH Key Authentication",
-            description:
-              "Understand SSH key-based authentication and common misconfigurations.",
-            difficulty: "medium",
-            points: 150,
-            category: "network",
-            completed: false,
-          },
-          {
-            id: "network-5",
-            title: "Advanced Network Pivoting",
-            description:
-              "Master the art of network pivoting and lateral movement techniques.",
-            difficulty: "hard",
-            points: 200,
-            category: "network",
-            completed: false,
-          },
-
-          // Cryptography Challenges
-          {
-            id: "crypto-1",
-            title: "Caesar Cipher",
-            description: "Learn about the Caesar cipher and how to break it.",
-            difficulty: "easy",
-            points: 100,
-            category: "crypto",
-            completed: false,
-          },
-          {
-            id: "crypto-2",
-            title: "Vigenère Cipher",
-            description:
-              "Understand the Vigenère cipher and methods to crack it.",
-            difficulty: "easy",
-            points: 100,
-            category: "crypto",
-            completed: false,
-          },
-          {
-            id: "crypto-3",
-            title: "RSA Basics",
-            description:
-              "Learn the fundamentals of RSA encryption and common attacks.",
-            difficulty: "medium",
-            points: 150,
-            category: "crypto",
-            completed: false,
-          },
-          {
-            id: "crypto-4",
-            title: "Hash Cracking",
-            description:
-              "Practice cracking common hash algorithms and rainbow tables.",
-            difficulty: "medium",
-            points: 150,
-            category: "crypto",
-            completed: false,
-          },
-          {
-            id: "crypto-5",
-            title: "Advanced Cryptanalysis",
-            description:
-              "Master advanced cryptanalysis techniques and side-channel attacks.",
-            difficulty: "hard",
-            points: 200,
-            category: "crypto",
-            completed: false,
-          },
-        ];
-
-        setChallenges(mockChallenges);
+        const response = await fetch('/api/challenges');
+        if (!response.ok) {
+          throw new Error('Failed to fetch challenges');
+        }
+        const data = await response.json();
+        setChallenges(data);
       } catch (err) {
         setError("Failed to load challenges");
       } finally {
@@ -528,10 +115,11 @@ SELECT id, name, email FROM users WHERE id = 1 UNION SELECT 1, username, passwor
   };
 
   const groupedChallenges = filteredChallenges.reduce((acc, challenge) => {
-    if (!acc[challenge.category]) {
-      acc[challenge.category] = [];
+    const category = challenge.category || "getting-started";
+    if (!acc[category]) {
+      acc[category] = [];
     }
-    acc[challenge.category].push(challenge);
+    acc[category].push(challenge);
     return acc;
   }, {} as Record<string, Challenge[]>);
 
@@ -539,40 +127,32 @@ SELECT id, name, email FROM users WHERE id = 1 UNION SELECT 1, username, passwor
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#0A0F1C] py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-white mb-4">
-              Security Challenges
-            </h1>
-            <p className="text-xl text-gray-400">
-              Test your skills with our hands-on security challenges
-            </p>
-          </div>
-
-          {/* Filters */}
-          <div className="bg-[#12121A] rounded-lg p-4 mb-8 border border-gray-700">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search challenges..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-[#1A1A24] border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9580FF]"
-                  />
-                </div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-4">Challenges</h1>
+              <p className="text-white/60">
+                Test your skills with our collection of security challenges
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-0">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
+                <input
+                  type="text"
+                  placeholder="Search challenges..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-md pl-10 pr-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#9580FF]/50 focus:border-[#9580FF]/30 hover:bg-black/30 transition-colors duration-300 w-full sm:w-64"
+                />
               </div>
               <div className="flex gap-4">
                 <select
                   value={difficultyFilter}
-                  onChange={(e) =>
-                    setDifficultyFilter(e.target.value as DifficultyFilter)
-                  }
-                  className="bg-[#1A1A24] border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#9580FF]"
+                  onChange={(e) => setDifficultyFilter(e.target.value as DifficultyFilter)}
+                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#9580FF]/50 focus:border-[#9580FF]/30 hover:bg-black/30 transition-colors duration-300 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%239580FF%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M7.247%2011.14L2.451%205.658C1.885%205.013%202.345%204%203.204%204h9.592a1%201%200%200%201%20.753%201.659l-4.796%205.48a1%201%200%200%201-1.506%200z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[length:16px_16px] bg-[right_1rem_center] pr-10 [&>option]:bg-[#12121A] [&>option]:text-white [&>option]:hover:bg-[#9580FF]/20 [&>option]:hover:text-white"
                 >
                   <option value="all">All Difficulties</option>
                   <option value="easy">Easy</option>
@@ -581,10 +161,8 @@ SELECT id, name, email FROM users WHERE id = 1 UNION SELECT 1, username, passwor
                 </select>
                 <select
                   value={categoryFilter}
-                  onChange={(e) =>
-                    setCategoryFilter(e.target.value as CategoryFilter)
-                  }
-                  className="bg-[#1A1A24] border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#9580FF]"
+                  onChange={(e) => setCategoryFilter(e.target.value as CategoryFilter)}
+                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#9580FF]/50 focus:border-[#9580FF]/30 hover:bg-black/30 transition-colors duration-300 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%239580FF%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M7.247%2011.14L2.451%205.658C1.885%205.013%202.345%204%203.204%204h9.592a1%201%200%200%201%20.753%201.659l-4.796%205.48a1%201%200%200%201-1.506%200z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[length:16px_16px] bg-[right_1rem_center] pr-10 [&>option]:bg-[#12121A] [&>option]:text-white [&>option]:hover:bg-[#9580FF]/20 [&>option]:hover:text-white"
                 >
                   <option value="all">All Categories</option>
                   <option value="web">Web Security</option>
@@ -623,8 +201,8 @@ SELECT id, name, email FROM users WHERE id = 1 UNION SELECT 1, username, passwor
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {groupedChallenges[category].map((challenge) => (
                           <div
-                            key={challenge.id}
-                            className="bg-[#12121A] rounded-lg p-6 border border-gray-700 hover:border-[#9580FF] transition-colors duration-200"
+                            key={challenge._id}
+                            className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300"
                           >
                             <div className="flex items-start justify-between mb-4">
                               <h3 className="text-xl font-bold text-white">
@@ -634,21 +212,21 @@ SELECT id, name, email FROM users WHERE id = 1 UNION SELECT 1, username, passwor
                                 difficulty={challenge.difficulty}
                               />
                             </div>
-                            <p className="text-gray-400 mb-4">
+                            <p className="text-white/60 mb-4">
                               {challenge.description}
                             </p>
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <Terminal className="h-5 w-5 text-[#9580FF]" />
-                                <span className="text-[#9580FF]">
+                                <Terminal className="h-5 w-5 text-white/60" />
+                                <span className="text-white/60">
                                   {challenge.points} points
                                 </span>
                               </div>
                               <button
                                 onClick={() =>
-                                  handleStartChallenge(challenge.id)
+                                  handleStartChallenge(challenge._id)
                                 }
-                                className="bg-[#9580FF] text-white px-4 py-2 rounded-md hover:bg-[#6E54C8] transition-colors duration-200"
+                                className="bg-white/10 text-white px-4 py-2 rounded-md hover:bg-white/20 transition-colors duration-300"
                               >
                                 Start Challenge
                               </button>

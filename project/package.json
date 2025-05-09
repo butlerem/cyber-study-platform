@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
   },
   "dependencies": {
-    "@types/node": "^22.14.1",
-    "bcryptjs": "^3.0.2",
+    "@auth/mongodb-adapter": "^3.9.0",
+    "argon2": "^0.43.0",
     "framer-motion": "^12.7.2",
     "lucide-react": "^0.344.0",
     "mongodb": "^6.3.0",
@@ -26,6 +26,8 @@
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@tailwindcss/typography": "^0.5.10",
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^22.14.1",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@types/three": "^0.162.0",
@@ -36,7 +38,9 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.5.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.3.0"
   }
 }

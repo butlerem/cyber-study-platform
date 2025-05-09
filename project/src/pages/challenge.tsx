@@ -130,9 +130,9 @@ function ChallengePage() {
 
   if (!challenge) {
     return (
-      <div className="text-center text-red-500 py-12">
-        Challenge not found
-        <button onClick={() => router.push("/challenges")}>
+      <div className="text-center py-12">
+        <p className="text-red-500">Challenge not found</p>
+        <button onClick={() => router.push("/challenges")} className="btn-secondary mt-4">
           Back to Challenges
         </button>
       </div>
@@ -143,7 +143,7 @@ function ChallengePage() {
     <div className="max-w-7xl mx-auto px-4 py-12">
       <button
         onClick={() => router.push("/challenges")}
-        className="flex items-center text-gray-400 hover:text-white mb-8"
+        className="nav-link flex items-center mb-8"
       >
         <ArrowLeft className="h-5 w-5 mr-2" />
         Back to Challenges
@@ -151,20 +151,22 @@ function ChallengePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <h1 className="text-3xl font-bold mb-4">{challenge.title}</h1>
-          <ReactMarkdown className="prose prose-invert max-w-none">
-            {challenge.content}
-          </ReactMarkdown>
+          <h1 className="mb-6">{challenge.title}</h1>
+          <div className="prose prose-invert prose-light max-w-none">
+            <ReactMarkdown>{challenge.content}</ReactMarkdown>
+          </div>
         </div>
 
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold">Server Access</h2>
-            <pre>{JSON.stringify(challenge.server_credentials, null, 2)}</pre>
+        <div className="space-y-8">
+          <div className="card">
+            <h3 className="text-xl mb-4">Server Access</h3>
+            <pre className="bg-[#1A1F2E] p-4 rounded-lg overflow-x-auto">
+              {JSON.stringify(challenge.server_credentials, null, 2)}
+            </pre>
           </div>
 
-          <div>
-            <h2 className="text-xl font-semibold">Submit Flag</h2>
+          <div className="card">
+            <h3 className="text-xl mb-4">Submit Flag</h3>
             {user ? (
               success ? (
                 <p className="text-green-500">Challenge completed!</p>
@@ -173,13 +175,13 @@ function ChallengePage() {
                   <input
                     value={flag}
                     onChange={(e) => setFlag(e.target.value)}
-                    className="w-full mb-2 px-3 py-2 bg-gray-800 rounded-md"
+                    className="w-full mb-4 px-4 py-3 bg-[#1A1F2E] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9580FF]"
                     placeholder="Enter flag"
                   />
-                  {error && <p className="text-red-500">{error}</p>}
+                  {error && <p className="text-red-500 mb-4">{error}</p>}
                   <button
                     type="submit"
-                    className="bg-[#9580FF] text-white py-2 px-4 rounded-md"
+                    className="btn-secondary w-full"
                   >
                     Submit Flag
                   </button>
@@ -187,8 +189,8 @@ function ChallengePage() {
               )
             ) : (
               <button
-                onClick={() => router.push("/login")}
-                className="bg-[#9580FF] text-white py-2 px-4 rounded-md"
+                onClick={() => router.push("/auth/signin")}
+                className="btn-secondary w-full"
               >
                 Sign in to submit
               </button>
@@ -196,8 +198,10 @@ function ChallengePage() {
           </div>
 
           {userProgress && (
-            <div className="text-sm text-gray-400">
-              Attempts: {userProgress.attempts || 0}
+            <div className="card">
+              <p className="text-sm">
+                Attempts: {userProgress.attempts || 0}
+              </p>
             </div>
           )}
         </div>

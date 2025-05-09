@@ -4,6 +4,7 @@ const challengeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   content: { type: String, required: true },
+  category: { type: String, required: true },
   difficulty: { type: String, required: true },
   points: { type: Number, required: true },
   flag: { type: String, required: true },
