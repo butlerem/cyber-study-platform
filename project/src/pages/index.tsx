@@ -22,6 +22,8 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
+import AnimatedCounter from "../components/AnimatedCounter";
+import ShiningButton from "../components/ShiningButton";
 
 // Animation variants
 const fadeInUp = {
@@ -102,11 +104,26 @@ export default function HomePage() {
         // Simulate fetching user count with animation
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Set loading to false after the delay
-        setLoading(false);
+        // Animate the counter from 0 to 234
+        const targetCount = 234;
+        const duration = 2000; // 2 seconds
+        const steps = 60; // 60 steps for smooth animation
+        const stepDuration = duration / steps;
+        const increment = targetCount / steps;
 
-        // Set the target count directly
-        setUserCount(234);
+        let currentCount = 0;
+        const interval = setInterval(() => {
+          currentCount += increment;
+          if (currentCount >= targetCount) {
+            setUserCount(targetCount);
+            clearInterval(interval);
+            setLoading(false);
+          } else {
+            setUserCount(Math.floor(currentCount));
+          }
+        }, stepDuration);
+
+        return () => clearInterval(interval);
       } catch (error) {
         console.error("Failed to fetch user count:", error);
         setLoading(false);
@@ -118,7 +135,7 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden">
+      <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
         {/* Progress Bar */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-1 bg-[#9580FF] z-50 origin-left"
@@ -139,25 +156,22 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-6xl font-bold text-white mb-8 relative z-10">
-                Learn Cybersecurity Through Hands-On Challenges
+                Master Web Security Through Interactive Challenges
               </h1>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                Master practical security skills with our interactive labs and
-                real-world scenarios. Join our community of student security
-                enthusiasts and advance your skills together.
+                Learn web security through hands-on challenges in a safe, browser-based environment. 
+                Practice SQL injection, XSS, IDOR, and more.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-6">
-                <motion.button
+                <ShiningButton
                   onClick={() => router.push("/register")}
-                  className="bg-[#9580FF] text-white py-4 px-8 rounded-md hover:bg-[#6E54C8] transition-colors duration-200 font-medium text-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="bg-[#9580FF]/20 backdrop-blur-sm border-2 border-[#9580FF] text-white py-4 px-8 rounded-[100px] hover:bg-[#9580FF]/30 hover:border-[#9580FF]/80 transition-all duration-300 font-medium text-lg shadow-lg hover:shadow-[#9580FF]/20"
                 >
                   Get Started
-                </motion.button>
+                </ShiningButton>
                 <motion.button
                   onClick={() => router.push("/challenges")}
-                  className="bg-transparent border border-[#9580FF] text-white py-4 px-8 rounded-md hover:bg-[#9580FF]/10 transition-colors duration-200 font-medium text-lg"
+                  className="bg-transparent border-2 border-white/20 text-white py-4 px-8 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-all duration-300 font-medium text-lg"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -168,7 +182,7 @@ export default function HomePage() {
 
             {/* Stats Section */}
             <motion.div
-              className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-12 mb-32 relative"
+              className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-12 mb-32 relative"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -178,7 +192,7 @@ export default function HomePage() {
               <div className="relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold text-[#9580FF] mb-4">
+                    <div className="text-6xl font-bold text-white/60 mb-4">
                       <AnimatePresence mode="wait">
                         {loading ? (
                           <motion.span
@@ -197,24 +211,24 @@ export default function HomePage() {
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
                           >
-                            {userCount.toLocaleString()}
+                            <AnimatedCounter end={userCount} />
                           </motion.span>
                         )}
                       </AnimatePresence>
                     </div>
-                    <p className="text-gray-400 text-lg">Active Learners</p>
+                    <p className="text-white/60 text-lg">Active Learners</p>
                   </motion.div>
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold text-[#9580FF] mb-4">
+                    <div className="text-6xl font-bold text-white/60 mb-4">
                       50+
                     </div>
-                    <p className="text-gray-400 text-lg">Security Challenges</p>
+                    <p className="text-white/60 text-lg">Security Challenges</p>
                   </motion.div>
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold text-[#9580FF] mb-4">
+                    <div className="text-6xl font-bold text-white/60 mb-4">
                       24/7
                     </div>
-                    <p className="text-gray-400 text-lg">Community Support</p>
+                    <p className="text-white/60 text-lg">Community Support</p>
                   </motion.div>
                 </div>
               </div>
@@ -230,20 +244,20 @@ export default function HomePage() {
             >
               {/* Feature 1 */}
               <motion.div
-                className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 hover:border-[#9580FF] transition-colors duration-200"
+                className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300"
                 variants={fadeInUp}
                 whileHover={{
                   y: -5,
-                  boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                  boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                 }}
               >
                 <div className="flex items-center mb-6">
-                  <BookOpen className="h-8 w-8 text-[#9580FF] mr-3" />
+                  <BookOpen className="h-8 w-8 text-white/60 mr-3" />
                   <h3 className="text-2xl font-bold text-white">
                     Practical Learning
                   </h3>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="text-white/60 text-lg">
                   Hands-on labs and real-world scenarios to build practical
                   security skills.
                 </p>
@@ -251,20 +265,20 @@ export default function HomePage() {
 
               {/* Feature 2 */}
               <motion.div
-                className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 hover:border-[#9580FF] transition-colors duration-200"
+                className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300"
                 variants={fadeInUp}
                 whileHover={{
                   y: -5,
-                  boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                  boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                 }}
               >
                 <div className="flex items-center mb-6">
-                  <Users className="h-8 w-8 text-[#9580FF] mr-3" />
+                  <Users className="h-8 w-8 text-white/60 mr-3" />
                   <h3 className="text-2xl font-bold text-white">
                     Active Community
                   </h3>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="text-white/60 text-lg">
                   Join our community of student security enthusiasts and learn
                   together.
                 </p>
@@ -272,18 +286,18 @@ export default function HomePage() {
 
               {/* Feature 3 */}
               <motion.div
-                className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 hover:border-[#9580FF] transition-colors duration-200"
+                className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300"
                 variants={fadeInUp}
                 whileHover={{
                   y: -5,
-                  boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                  boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                 }}
               >
                 <div className="flex items-center mb-6">
-                  <GitPullRequest className="h-8 w-8 text-[#9580FF] mr-3" />
+                  <GitPullRequest className="h-8 w-8 text-white/60 mr-3" />
                   <h3 className="text-2xl font-bold text-white">Contribute</h3>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="text-white/60 text-lg">
                   Submit your own challenges, improve existing ones, and help
                   build this platform.
                 </p>
@@ -304,76 +318,76 @@ export default function HomePage() {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                   <motion.div
-                    className="bg-[#12121A] rounded-lg p-8 border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
                     variants={fadeInUp}
                     whileHover={{
                       y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     <div className="flex items-center mb-6">
-                      <Code className="h-8 w-8 text-[#9580FF] mr-3" />
-                      <h3 className="text-xl font-bold text-white">Basics</h3>
+                      <Code className="h-8 w-8 text-white/60 mr-3" />
+                      <h3 className="text-xl font-bold text-white">Web Basics</h3>
                     </div>
-                    <p className="text-gray-400 text-lg">
-                      Start with fundamental security concepts and tools
+                    <p className="text-white/60 text-lg">
+                      Start with fundamental web security concepts and common vulnerabilities
                     </p>
                   </motion.div>
                   <motion.div
-                    className="bg-[#12121A] rounded-lg p-8 border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
                     variants={fadeInUp}
                     whileHover={{
                       y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     <div className="flex items-center mb-6">
-                      <Shield className="h-8 w-8 text-[#9580FF] mr-3" />
+                      <Shield className="h-8 w-8 text-white/60 mr-3" />
                       <h3 className="text-xl font-bold text-white">
                         Web Security
                       </h3>
                     </div>
-                    <p className="text-gray-400 text-lg">
-                      Learn about common web vulnerabilities and defenses
+                    <p className="text-white/60 text-lg">
+                      Master common web vulnerabilities like SQL injection and XSS
                     </p>
                   </motion.div>
                   <motion.div
-                    className="bg-[#12121A] rounded-lg p-8 border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
                     variants={fadeInUp}
                     whileHover={{
                       y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     <div className="flex items-center mb-6">
-                      <Rocket className="h-8 w-8 text-[#9580FF] mr-3" />
+                      <Rocket className="h-8 w-8 text-white/60 mr-3" />
                       <h3 className="text-xl font-bold text-white">Advanced</h3>
                     </div>
-                    <p className="text-gray-400 text-lg">
-                      Tackle complex security challenges and CTF-style problems
+                    <p className="text-white/60 text-lg">
+                      Tackle complex security challenges and advanced exploitation techniques
                     </p>
                   </motion.div>
                   <motion.div
-                    className="bg-[#12121A] rounded-lg p-8 border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
                     variants={fadeInUp}
                     whileHover={{
                       y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     <div className="flex items-center mb-6">
-                      <Trophy className="h-8 w-8 text-[#9580FF] mr-3" />
+                      <Trophy className="h-8 w-8 text-white/60 mr-3" />
                       <h3 className="text-xl font-bold text-white">Expert</h3>
                     </div>
-                    <p className="text-gray-400 text-lg">
-                      Master advanced techniques and contribute to the community
+                    <p className="text-white/60 text-lg">
+                      Master advanced web security techniques and real-world scenarios
                     </p>
                   </motion.div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Student Projects Section */}
+            {/* Why Choose ExpLab Section */}
             <motion.div
               className="mb-32 relative overflow-hidden"
               initial="hidden"
@@ -383,62 +397,56 @@ export default function HomePage() {
             >
               <div className="relative z-10">
                 <h2 className="text-4xl font-bold text-white text-center mb-12">
-                  Built By Students, For Students
+                  Why Choose ExpLab?
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   <motion.div
-                    className="bg-[#12121A] rounded-lg p-8 border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
                     variants={fadeInUp}
                     whileHover={{
                       y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     <h3 className="text-2xl font-bold text-white mb-6">
-                      Community Contributions
+                      Real-World Vulnerabilities
                     </h3>
-                    <p className="text-gray-400 text-lg mb-6">
-                      This platform is built and maintained by students
-                      passionate about cybersecurity. We actively contribute by
-                      creating new challenges, improving existing ones, and
-                      sharing our knowledge with the community.
+                    <p className="text-white/60 text-lg mb-6">
+                      Each challenge simulates real-world vulnerabilities, guiding you from basic concepts to advanced techniques. 
+                      Learn by doing in a safe, controlled environment.
                     </p>
                     <motion.a
-                      href="https://github.com/your-username/hackerlabs"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#9580FF] hover:text-[#6E54C8] transition-colors duration-200 flex items-center text-lg"
+                      href="/challenges"
+                      className="text-white/60 hover:text-white transition-colors duration-300 flex items-center text-lg"
                       whileHover={{ x: 5 }}
                     >
-                      <Github className="h-6 w-6 mr-2" />
-                      Contribute on GitHub
+                      <ArrowRight className="h-6 w-6 mr-2" />
+                      Explore Challenges
                     </motion.a>
                   </motion.div>
                   <motion.div
-                    className="bg-[#12121A] rounded-lg p-8 border border-gray-700"
+                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
                     variants={fadeInUp}
                     whileHover={{
                       y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(149, 128, 255, 0.1)",
+                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     <h3 className="text-2xl font-bold text-white mb-6">
-                      Submit Your Challenges
+                      No Setup Required
                     </h3>
-                    <p className="text-gray-400 text-lg mb-6">
-                      Have a great challenge idea? Submit it to our platform! We
-                      welcome contributions from all students. Create
-                      challenges, share your knowledge, and help others learn.
+                    <p className="text-white/60 text-lg mb-6">
+                      Start learning immediately in our browser-based environment. 
+                      No complex setup or configuration needed - just focus on mastering 
+                      web security concepts and techniques.
                     </p>
                     <motion.a
-                      href="https://github.com/your-username/hackerlabs/issues/new?template=challenge-submission.md"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#9580FF] hover:text-[#6E54C8] transition-colors duration-200 flex items-center text-lg"
+                      href="/register"
+                      className="text-white/60 hover:text-white transition-colors duration-300 flex items-center text-lg"
                       whileHover={{ x: 5 }}
                     >
-                      <GitPullRequest className="h-6 w-6 mr-2" />
-                      Submit a Challenge
+                      <User className="h-6 w-6 mr-2" />
+                      Start Learning
                     </motion.a>
                   </motion.div>
                 </div>

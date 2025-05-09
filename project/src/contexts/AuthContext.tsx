@@ -2,22 +2,20 @@
 import React, { createContext, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { AuthContextType } from "./authUtils";
-import { handleSignIn, handleSignUp, handleSignOut } from "./authUtils"; // Import utility functions
+import { handleSignOut } from "./authUtils";
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const loading = status === "loading";
 
-  // Ensure user has email and username
   const user = session?.user
     ? {
-        id: session.user.email || "",
-        email: session.user.email || "", // Fallback to empty string if email is missing
-        username: session.user.name || "Anonymous", // Fallback to 'Anonymous' if name is missing
+        id: session.user.id || "",
+        name: session.user.name || "Anonymous",
+        email: session.user.email || "",
+        image: session.user.image || "",
       }
     : null;
 
@@ -26,8 +24,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         loading,
-        signIn: handleSignIn,
-        signUp: handleSignUp,
         signOut: handleSignOut,
       }}
     >

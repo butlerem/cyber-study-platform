@@ -110,14 +110,14 @@ export default function CommunityPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden">
+      <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
         {/* 3D Space Animation Background */}
         <SpaceBackground />
 
         <div className="relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-24">
               <h1 className="text-4xl font-bold text-white">Community</h1>
               <p className="mt-4 text-xl text-gray-400">
                 Connect with fellow security enthusiasts and share knowledge
@@ -125,10 +125,10 @@ export default function CommunityPage() {
             </div>
 
             {/* User Counter Card */}
-            <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 mb-8">
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-16">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center mb-6 md:mb-0">
-                  <Users className="h-12 w-12 text-[#9580FF] mr-4" />
+                  <Users className="h-12 w-12 text-white/60 mr-4" />
                   <div>
                     <h2 className="text-2xl font-bold text-white">
                       Active Members
@@ -138,9 +138,9 @@ export default function CommunityPage() {
                 </div>
                 <div className="text-center md:text-right">
                   {loading ? (
-                    <div className="text-5xl font-bold text-[#9580FF]">...</div>
+                    <div className="text-5xl font-bold text-white/60">...</div>
                   ) : (
-                    <div className="text-5xl font-bold text-[#9580FF]">
+                    <div className="text-5xl font-bold text-white/60">
                       {userCount}
                     </div>
                   )}
@@ -150,10 +150,10 @@ export default function CommunityPage() {
             </div>
 
             {/* Discord Join Card */}
-            <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-8 mb-12">
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-24">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center mb-6 md:mb-0">
-                  <MessageSquare className="h-12 w-12 text-[#9580FF] mr-4" />
+                  <MessageSquare className="h-12 w-12 text-white/60 mr-4" />
                   <div>
                     <h2 className="text-2xl font-bold text-white">
                       Join Our Discord
@@ -167,7 +167,7 @@ export default function CommunityPage() {
                   href="https://discord.gg/example"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#5865F2] text-white py-3 px-6 rounded-md hover:bg-[#4752C4] transition-colors duration-200 flex items-center"
+                  className="bg-white/10 text-white py-3 px-6 rounded-md hover:bg-white/20 transition-colors duration-200 flex items-center"
                 >
                   Join Discord
                   <ArrowRight className="h-5 w-5 ml-2" />
@@ -176,47 +176,77 @@ export default function CommunityPage() {
             </div>
 
             {/* Community Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32">
               {/* Feature 1 */}
-              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
-                <div className="flex items-center mb-4">
-                  <MessageSquare className="h-6 w-6 text-[#9580FF] mr-2" />
-                  <h3 className="text-xl font-bold text-white">
+              <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300">
+                <div className="flex items-center mb-6">
+                  <MessageSquare className="h-8 w-8 text-white/60 mr-3" />
+                  <h3 className="text-2xl font-bold text-white">
                     Real-time Support
                   </h3>
                 </div>
-                <p className="text-gray-400">
+                <p className="text-gray-400 text-lg">
                   Get help from community members and moderators when you're
                   stuck on a challenge.
                 </p>
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
-                <div className="flex items-center mb-4">
-                  <Users className="h-6 w-6 text-[#9580FF] mr-2" />
-                  <h3 className="text-xl font-bold text-white">
+              <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300">
+                <div className="flex items-center mb-6">
+                  <Users className="h-8 w-8 text-white/60 mr-3" />
+                  <h3 className="text-2xl font-bold text-white">
                     Knowledge Sharing
                   </h3>
                 </div>
-                <p className="text-gray-400">
+                <p className="text-gray-400 text-lg">
                   Share your solutions and learn from others' approaches to
                   security challenges.
                 </p>
               </div>
 
               {/* Feature 3 */}
-              <div className="bg-[#12121A] rounded-lg shadow-lg overflow-hidden border border-gray-700 p-6 hover:border-[#9580FF] transition-colors duration-200">
-                <div className="flex items-center mb-4">
-                  <ArrowRight className="h-6 w-6 text-[#9580FF] mr-2" />
-                  <h3 className="text-xl font-bold text-white">
+              <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300">
+                <div className="flex items-center mb-6">
+                  <ArrowRight className="h-8 w-8 text-white/60 mr-3" />
+                  <h3 className="text-2xl font-bold text-white">
                     Collaboration
                   </h3>
                 </div>
-                <p className="text-gray-400">
+                <p className="text-gray-400 text-lg">
                   Work together on challenges and build your network of security
                   professionals.
                 </p>
+              </div>
+            </div>
+
+            {/* Recent Posts Section */}
+            <div className="mb-32">
+              <h2 className="text-3xl font-bold text-white mb-12">Recent Discussions</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {posts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300"
+                  >
+                    <h3 className="text-xl font-bold text-white mb-4">{post.title}</h3>
+                    <p className="text-gray-400 mb-4">{post.content}</p>
+                    <div className="flex items-center justify-between text-sm text-gray-400">
+                      <span>By {post.author}</span>
+                      <span>{post.createdAt}</span>
+                    </div>
+                    <div className="flex items-center gap-4 mt-4">
+                      <span className="flex items-center text-gray-400">
+                        <MessageSquare className="h-4 w-4 mr-1" />
+                        {post.comments} comments
+                      </span>
+                      <span className="flex items-center text-gray-400">
+                        <Users className="h-4 w-4 mr-1" />
+                        {post.likes} likes
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
