@@ -7,7 +7,10 @@ import SpaceBackground from "@/components/SpaceBackground";
 
 export default function SignIn() {
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
+    <div
+      className="min-h-screen relative overflow-hidden"
+      style={{ background: "linear-gradient(to bottom, #000000, #111111)" }}
+    >
       {/* 3D Space Animation Background */}
       <SpaceBackground />
 
@@ -19,10 +22,10 @@ export default function SignIn() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl font-bold text-center mb-2">
+              <h1 className="text-4xl font-bold text-white text-center mb-2">
                 Welcome Back
               </h1>
-              <p className="text-center">
+              <p className="text-center text-white">
                 Choose your preferred sign in method
               </p>
             </motion.div>
@@ -53,4 +56,4 @@ export default function SignIn() {
       </div>
     </div>
   );
-} 
+}

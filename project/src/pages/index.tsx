@@ -135,7 +135,10 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #000000, #111111)' }}>
+      <div
+        className="min-h-screen relative overflow-hidden"
+        style={{ background: "linear-gradient(to bottom, #000000, #111111)" }}
+      >
         {/* Progress Bar */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-1 bg-[#9580FF] z-50 origin-left"
@@ -159,12 +162,13 @@ export default function HomePage() {
                 Master Web Security Through Interactive Challenges
               </h1>
               <p className="max-w-3xl mx-auto mb-12">
-                Learn web security through hands-on challenges in a safe, browser-based environment. 
-                Practice SQL injection, XSS, IDOR, and more.
+                Learn web security through hands-on challenges in a safe,
+                browser-based environment. Practice SQL injection, XSS, IDOR,
+                and more.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-6">
                 <ShiningButton
-                  onClick={() => router.push("/register")}
+                  onClick={() => router.push("/auth/signin")}
                   className="bg-[#9580FF]/20 backdrop-blur-sm border-2 border-[#9580FF] text-white py-4 px-8 rounded-[100px] hover:bg-[#9580FF]/30 hover:border-[#9580FF]/80 transition-all duration-300 font-medium text-lg shadow-lg hover:shadow-[#9580FF]/20"
                 >
                   Get Started
@@ -219,15 +223,11 @@ export default function HomePage() {
                     <p>Active Learners</p>
                   </motion.div>
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold mb-4">
-                      50+
-                    </div>
+                    <div className="text-6xl font-bold mb-4">50+</div>
                     <p>Security Challenges</p>
                   </motion.div>
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold mb-4">
-                      24/7
-                    </div>
+                    <div className="text-6xl font-bold mb-4">24/7</div>
                     <p>Community Support</p>
                   </motion.div>
                 </div>
@@ -253,9 +253,7 @@ export default function HomePage() {
               >
                 <div className="flex items-center mb-6">
                   <BookOpen className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold">
-                    Practical Learning
-                  </h3>
+                  <h3 className="text-2xl font-bold">Practical Learning</h3>
                 </div>
                 <p>
                   Hands-on labs and real-world scenarios to build practical
@@ -274,9 +272,7 @@ export default function HomePage() {
               >
                 <div className="flex items-center mb-6">
                   <Users className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold">
-                    Active Community
-                  </h3>
+                  <h3 className="text-2xl font-bold">Active Community</h3>
                 </div>
                 <p>
                   Join our community of student security enthusiasts and learn
@@ -313,11 +309,9 @@ export default function HomePage() {
               variants={fadeInUp}
             >
               <div className="relative z-10">
-                <h2 className="text-center mb-12">
-                  Your Learning Journey
-                </h2>
+                <h2 className="text-center mb-12">Your Learning Journey</h2>
                 <div className="relative w-full overflow-hidden">
-                  <div 
+                  <div
                     className="flex gap-8 animate-carousel"
                     style={{
                       width: "fit-content",
@@ -338,7 +332,8 @@ export default function HomePage() {
                           <h3>Web Basics</h3>
                         </div>
                         <p>
-                          Start with fundamental web security concepts and common vulnerabilities
+                          Start with fundamental web security concepts and
+                          common vulnerabilities
                         </p>
                       </div>
                       <div
@@ -354,7 +349,8 @@ export default function HomePage() {
                           <h3>Web Security</h3>
                         </div>
                         <p>
-                          Master common web vulnerabilities like SQL injection and XSS
+                          Master common web vulnerabilities like SQL injection
+                          and XSS
                         </p>
                       </div>
                       <div
@@ -370,7 +366,8 @@ export default function HomePage() {
                           <h3>Advanced</h3>
                         </div>
                         <p>
-                          Tackle complex security challenges and advanced exploitation techniques
+                          Tackle complex security challenges and advanced
+                          exploitation techniques
                         </p>
                       </div>
                       <div
@@ -386,7 +383,8 @@ export default function HomePage() {
                           <h3>Expert</h3>
                         </div>
                         <p>
-                          Master advanced web security techniques and real-world scenarios
+                          Master advanced web security techniques and real-world
+                          scenarios
                         </p>
                       </div>
                     </div>
@@ -405,7 +403,8 @@ export default function HomePage() {
                           <h3>Web Basics</h3>
                         </div>
                         <p>
-                          Start with fundamental web security concepts and common vulnerabilities
+                          Start with fundamental web security concepts and
+                          common vulnerabilities
                         </p>
                       </div>
                       <div
@@ -421,7 +420,8 @@ export default function HomePage() {
                           <h3>Web Security</h3>
                         </div>
                         <p>
-                          Master common web vulnerabilities like SQL injection and XSS
+                          Master common web vulnerabilities like SQL injection
+                          and XSS
                         </p>
                       </div>
                       <div
@@ -437,7 +437,8 @@ export default function HomePage() {
                           <h3>Advanced</h3>
                         </div>
                         <p>
-                          Tackle complex security challenges and advanced exploitation techniques
+                          Tackle complex security challenges and advanced
+                          exploitation techniques
                         </p>
                       </div>
                       <div
@@ -453,7 +454,8 @@ export default function HomePage() {
                           <h3>Expert</h3>
                         </div>
                         <p>
-                          Master advanced web security techniques and real-world scenarios
+                          Master advanced web security techniques and real-world
+                          scenarios
                         </p>
                       </div>
                     </div>
@@ -471,9 +473,7 @@ export default function HomePage() {
               variants={fadeInUp}
             >
               <div className="relative z-10">
-                <h2 className="text-center mb-12">
-                  Why Choose ExpLab?
-                </h2>
+                <h2 className="text-center mb-12">Why Choose ExpLab?</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   <motion.div
                     className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
@@ -483,11 +483,10 @@ export default function HomePage() {
                       boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
-                    <h3 className="mb-6">
-                      Real-World Vulnerabilities
-                    </h3>
+                    <h3 className="mb-6">Real-World Vulnerabilities</h3>
                     <p className="mb-6">
-                      Each challenge simulates real-world vulnerabilities, guiding you from basic concepts to advanced techniques. 
+                      Each challenge simulates real-world vulnerabilities,
+                      guiding you from basic concepts to advanced techniques.
                       Learn by doing in a safe, controlled environment.
                     </p>
                     <motion.a
@@ -507,13 +506,12 @@ export default function HomePage() {
                       boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
-                    <h3 className="mb-6">
-                      No Setup Required
-                    </h3>
+                    <h3 className="mb-6">No Setup Required</h3>
                     <p className="mb-6">
-                      Start learning immediately in our browser-based environment. 
-                      No complex setup or configuration needed - just focus on mastering 
-                      web security concepts and techniques.
+                      Start learning immediately in our browser-based
+                      environment. No complex setup or configuration needed -
+                      just focus on mastering web security concepts and
+                      techniques.
                     </p>
                     <motion.a
                       href="/register"
