@@ -1,30 +1,21 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import { Challenge } from '../src/lib/models/Challenge.js';
+// Convert ES module imports to CommonJS
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const { Challenge } = require('../src/lib/models/Challenge.ts');
 
 // Ensure environment variables are loaded
 dotenv.config();
 
-// Define the Challenge interface
-interface IChallenge {
-  title: string;
-  description: string;
-  content: string;
-  category: string;
-  difficulty: string;
-  points: number;
-  flag: string;
-  server_credentials: null;
-}
-
-// Type assertion for MongoDB URI
-const MONGODB_URI = process.env.MONGODB_URI as string;
+// Remove TypeScript interface and type assertions
+// const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error('MONGODB_URI environment variable is not defined');
 }
 
-const challenges: IChallenge[] = [
+// Remove TypeScript type annotation
+const challenges = [
   {
     title: "Setting Up Your Pentesting Environment",
     description: "Learn how to set up a proper ethical hacking environment with Kali Linux and essential tools.",
@@ -66,9 +57,9 @@ Set up a secure and isolated ethical hacking lab using Kali Linux.
 Once your setup is complete, locate the hidden file in /root:
 \`cat /root/flag.txt\`
 
-The flag is: FLAG{environment_setup_complete}`,
-    category: "Getting Started",
-    difficulty: "Easy",
+Enter the flag you find above to complete this challenge.`,
+    category: "getting-started",
+    difficulty: "easy",
     points: 50,
     flag: "FLAG{environment_setup_complete}",
     server_credentials: null
@@ -107,12 +98,9 @@ Inspect port 31337 using Nmap service detection:
 
 Read the banner to extract the flag.
 
-Example output:
-31337/tcp open  unknown  Welcome to FLAG{recon_master}
-
-The flag is: FLAG{recon_master}`,
-    category: "Getting Started",
-    difficulty: "Easy",
+Enter the flag you find above to complete this challenge.`,
+    category: "getting-started",
+    difficulty: "easy",
     points: 50,
     flag: "FLAG{recon_master}",
     server_credentials: null
@@ -150,17 +138,16 @@ In Metasploit:
 Once inside:
 \`cat /root/flag.txt\`
 
-## Flag
-The flag is: FLAG{exploit_basics}`,
-    category: "Getting Started",
-    difficulty: "Easy",
+Enter the flag you find above to complete this challenge.`,
+    category: "getting-started",
+    difficulty: "easy",
     points: 50,
     flag: "FLAG{exploit_basics}",
     server_credentials: null
   }
 ];
 
-async function createChallenges(): Promise<void> {
+async function createChallenges() {
   try {
     await mongoose.connect(MONGODB_URI, {
       maxPoolSize: 10,
