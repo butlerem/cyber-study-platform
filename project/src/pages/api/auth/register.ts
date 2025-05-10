@@ -1,55 +1,59 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import connectDB from '../../../lib/mongodb';
-import { User } from '../../../lib/models/User';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
+import { User } from '../../../lib/models/User';
+import clientPromise from '../../../lib/mongodb';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
   try {
-    const { email, password, username } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!email || !password || !username) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    await connectDB();
+    // Connect to MongoDB
+    const client = await clientPromise;
+    const db = client.db();
 
     // Check if user already exists
-    const existingUser = await User.findOne({ 
-      $or: [{ email }, { username }] 
+    const existingUser = await db.collection('users').findOne({ 
+      $or: [{ email }, { username }]
     });
 
     if (existingUser) {
-      return res.status(400).json({ 
-        error: 'User with this email or username already exists' 
-      });
+      return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Hash the password before creating the user
+    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user with hashed password
-    const user = await User.create({
+    // Create user
+    const result = await db.collection('users').insertOne({
+      username,
       email,
       password: hashedPassword,
-      username,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
-    // Remove password from response
-    const userResponse = {
-      id: user._id,
-      email: user.email,
-      username: user.username,
-      created_at: user.created_at,
-    };
-
-    res.status(201).json(userResponse);
+    return res.status(201).json({
+      message: 'User created successfully',
+      user: {
+        id: result.insertedId,
+        username,
+        email,
+      },
+    });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ error: 'Error creating user' });
+    return res.status(500).json({ message: 'Internal server error' });
   }
 } 

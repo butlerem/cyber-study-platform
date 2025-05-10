@@ -146,19 +146,19 @@ export default function HomePage() {
         <SpaceBackground />
 
         <div className="relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
             {/* Hero Section */}
             <motion.div
-              className="text-center mb-32 relative"
+              className="text-center mb-40 relative"
               initial="hidden"
               animate="visible"
               variants={fadeInUp}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-6xl font-bold text-white mb-8 relative z-10">
+              <h1 className="mb-8 relative z-10">
                 Master Web Security Through Interactive Challenges
               </h1>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+              <p className="max-w-3xl mx-auto mb-12">
                 Learn web security through hands-on challenges in a safe, browser-based environment. 
                 Practice SQL injection, XSS, IDOR, and more.
               </p>
@@ -182,7 +182,7 @@ export default function HomePage() {
 
             {/* Stats Section */}
             <motion.div
-              className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-12 mb-32 relative"
+              className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-12 mb-40 relative"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -192,7 +192,7 @@ export default function HomePage() {
               <div className="relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold text-white/60 mb-4">
+                    <div className="text-6xl font-bold mb-4">
                       <AnimatePresence mode="wait">
                         {loading ? (
                           <motion.span
@@ -216,19 +216,19 @@ export default function HomePage() {
                         )}
                       </AnimatePresence>
                     </div>
-                    <p className="text-white/60 text-lg">Active Learners</p>
+                    <p>Active Learners</p>
                   </motion.div>
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold text-white/60 mb-4">
+                    <div className="text-6xl font-bold mb-4">
                       50+
                     </div>
-                    <p className="text-white/60 text-lg">Security Challenges</p>
+                    <p>Security Challenges</p>
                   </motion.div>
                   <motion.div className="text-center" variants={fadeInUp}>
-                    <div className="text-6xl font-bold text-white/60 mb-4">
+                    <div className="text-6xl font-bold mb-4">
                       24/7
                     </div>
-                    <p className="text-white/60 text-lg">Community Support</p>
+                    <p>Community Support</p>
                   </motion.div>
                 </div>
               </div>
@@ -236,7 +236,7 @@ export default function HomePage() {
 
             {/* Features Section */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32"
+              className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-40"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -253,11 +253,11 @@ export default function HomePage() {
               >
                 <div className="flex items-center mb-6">
                   <BookOpen className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="text-2xl font-bold">
                     Practical Learning
                   </h3>
                 </div>
-                <p className="text-white/60 text-lg">
+                <p>
                   Hands-on labs and real-world scenarios to build practical
                   security skills.
                 </p>
@@ -274,11 +274,11 @@ export default function HomePage() {
               >
                 <div className="flex items-center mb-6">
                   <Users className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="text-2xl font-bold">
                     Active Community
                   </h3>
                 </div>
-                <p className="text-white/60 text-lg">
+                <p>
                   Join our community of student security enthusiasts and learn
                   together.
                 </p>
@@ -295,108 +295,183 @@ export default function HomePage() {
               >
                 <div className="flex items-center mb-6">
                   <GitPullRequest className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold text-white">Contribute</h3>
+                  <h3 className="text-2xl font-bold">Contribute</h3>
                 </div>
-                <p className="text-white/60 text-lg">
+                <p>
                   Submit your own challenges, improve existing ones, and help
-                  build this platform.
+                  build our community.
                 </p>
               </motion.div>
             </motion.div>
 
             {/* Learning Path Section */}
             <motion.div
-              className="mb-32 relative overflow-hidden"
+              className="mb-40 relative overflow-hidden"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
             >
               <div className="relative z-10">
-                <h2 className="text-4xl font-bold text-white text-center mb-12">
+                <h2 className="text-center mb-12">
                   Your Learning Journey
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                  <motion.div
-                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
-                    variants={fadeInUp}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
+                <div className="relative w-full overflow-hidden">
+                  <div 
+                    className="flex gap-8 animate-carousel"
+                    style={{
+                      width: "fit-content",
                     }}
                   >
-                    <div className="flex items-center mb-6">
-                      <Code className="h-8 w-8 text-white/60 mr-3" />
-                      <h3 className="text-xl font-bold text-white">Web Basics</h3>
+                    {/* First set of cards */}
+                    <div className="flex gap-8">
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Code className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Web Basics</h3>
+                        </div>
+                        <p>
+                          Start with fundamental web security concepts and common vulnerabilities
+                        </p>
+                      </div>
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Shield className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Web Security</h3>
+                        </div>
+                        <p>
+                          Master common web vulnerabilities like SQL injection and XSS
+                        </p>
+                      </div>
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Rocket className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Advanced</h3>
+                        </div>
+                        <p>
+                          Tackle complex security challenges and advanced exploitation techniques
+                        </p>
+                      </div>
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Trophy className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Expert</h3>
+                        </div>
+                        <p>
+                          Master advanced web security techniques and real-world scenarios
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-white/60 text-lg">
-                      Start with fundamental web security concepts and common vulnerabilities
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
-                    variants={fadeInUp}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
-                    }}
-                  >
-                    <div className="flex items-center mb-6">
-                      <Shield className="h-8 w-8 text-white/60 mr-3" />
-                      <h3 className="text-xl font-bold text-white">
-                        Web Security
-                      </h3>
+                    {/* Duplicate set of cards for seamless loop */}
+                    <div className="flex gap-8">
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Code className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Web Basics</h3>
+                        </div>
+                        <p>
+                          Start with fundamental web security concepts and common vulnerabilities
+                        </p>
+                      </div>
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Shield className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Web Security</h3>
+                        </div>
+                        <p>
+                          Master common web vulnerabilities like SQL injection and XSS
+                        </p>
+                      </div>
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Rocket className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Advanced</h3>
+                        </div>
+                        <p>
+                          Tackle complex security challenges and advanced exploitation techniques
+                        </p>
+                      </div>
+                      <div
+                        className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300 min-w-[300px]"
+                        style={{
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden",
+                          WebkitFontSmoothing: "antialiased",
+                        }}
+                      >
+                        <div className="flex items-center mb-6">
+                          <Trophy className="h-8 w-8 text-white/60 mr-3" />
+                          <h3>Expert</h3>
+                        </div>
+                        <p>
+                          Master advanced web security techniques and real-world scenarios
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-white/60 text-lg">
-                      Master common web vulnerabilities like SQL injection and XSS
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
-                    variants={fadeInUp}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
-                    }}
-                  >
-                    <div className="flex items-center mb-6">
-                      <Rocket className="h-8 w-8 text-white/60 mr-3" />
-                      <h3 className="text-xl font-bold text-white">Advanced</h3>
-                    </div>
-                    <p className="text-white/60 text-lg">
-                      Tackle complex security challenges and advanced exploitation techniques
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-black/20 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:border-white/20 transition-colors duration-300"
-                    variants={fadeInUp}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
-                    }}
-                  >
-                    <div className="flex items-center mb-6">
-                      <Trophy className="h-8 w-8 text-white/60 mr-3" />
-                      <h3 className="text-xl font-bold text-white">Expert</h3>
-                    </div>
-                    <p className="text-white/60 text-lg">
-                      Master advanced web security techniques and real-world scenarios
-                    </p>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </motion.div>
 
             {/* Why Choose ExpLab Section */}
             <motion.div
-              className="mb-32 relative overflow-hidden"
+              className="mb-40 relative overflow-hidden"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUp}
             >
               <div className="relative z-10">
-                <h2 className="text-4xl font-bold text-white text-center mb-12">
+                <h2 className="text-center mb-12">
                   Why Choose ExpLab?
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -408,10 +483,10 @@ export default function HomePage() {
                       boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
-                    <h3 className="text-2xl font-bold text-white mb-6">
+                    <h3 className="mb-6">
                       Real-World Vulnerabilities
                     </h3>
-                    <p className="text-white/60 text-lg mb-6">
+                    <p className="mb-6">
                       Each challenge simulates real-world vulnerabilities, guiding you from basic concepts to advanced techniques. 
                       Learn by doing in a safe, controlled environment.
                     </p>
@@ -432,10 +507,10 @@ export default function HomePage() {
                       boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)",
                     }}
                   >
-                    <h3 className="text-2xl font-bold text-white mb-6">
+                    <h3 className="mb-6">
                       No Setup Required
                     </h3>
-                    <p className="text-white/60 text-lg mb-6">
+                    <p className="mb-6">
                       Start learning immediately in our browser-based environment. 
                       No complex setup or configuration needed - just focus on mastering 
                       web security concepts and techniques.

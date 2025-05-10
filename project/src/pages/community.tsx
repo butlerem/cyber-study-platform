@@ -115,25 +115,25 @@ export default function CommunityPage() {
         <SpaceBackground />
 
         <div className="relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
             {/* Header */}
-            <div className="text-center mb-24">
-              <h1 className="text-4xl font-bold text-white">Community</h1>
-              <p className="mt-4 text-xl text-gray-400">
+            <div className="text-center mb-32">
+              <h1 className="">Community</h1>
+              <p className="mt-6">
                 Connect with fellow security enthusiasts and share knowledge
               </p>
             </div>
 
             {/* User Counter Card */}
-            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-16">
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-24">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center mb-6 md:mb-0">
                   <Users className="h-12 w-12 text-white/60 mr-4" />
                   <div>
-                    <h2 className="text-2xl font-bold text-white">
+                    <h2 className="">
                       Active Members
                     </h2>
-                    <p className="text-gray-400">Join our growing community</p>
+                    <p className="">Join our growing community</p>
                   </div>
                 </div>
                 <div className="text-center md:text-right">
@@ -150,15 +150,15 @@ export default function CommunityPage() {
             </div>
 
             {/* Discord Join Card */}
-            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-24">
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 mb-32">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center mb-6 md:mb-0">
                   <MessageSquare className="h-12 w-12 text-white/60 mr-4" />
                   <div>
-                    <h2 className="text-2xl font-bold text-white">
+                    <h2 className="">
                       Join Our Discord
                     </h2>
-                    <p className="text-gray-400">
+                    <p className="">
                       Connect with the community in real-time
                     </p>
                   </div>
@@ -176,16 +176,16 @@ export default function CommunityPage() {
             </div>
 
             {/* Community Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-40">
               {/* Feature 1 */}
               <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300">
                 <div className="flex items-center mb-6">
                   <MessageSquare className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="mb-6">
                     Real-time Support
                   </h3>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="">
                   Get help from community members and moderators when you're
                   stuck on a challenge.
                 </p>
@@ -195,11 +195,11 @@ export default function CommunityPage() {
               <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300">
                 <div className="flex items-center mb-6">
                   <Users className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="mb-6">
                     Knowledge Sharing
                   </h3>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="">
                   Share your solutions and learn from others' approaches to
                   security challenges.
                 </p>
@@ -209,11 +209,11 @@ export default function CommunityPage() {
               <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10 p-8 hover:border-white/20 transition-colors duration-300">
                 <div className="flex items-center mb-6">
                   <ArrowRight className="h-8 w-8 text-white/60 mr-3" />
-                  <h3 className="text-2xl font-bold text-white">
+                  <h3 className="mb-6">
                     Collaboration
                   </h3>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="">
                   Work together on challenges and build your network of security
                   professionals.
                 </p>
@@ -222,7 +222,7 @@ export default function CommunityPage() {
 
             {/* Recent Posts Section */}
             <div className="mb-32">
-              <h2 className="text-3xl font-bold text-white mb-12">Recent Discussions</h2>
+              <h2 className="mb-12">Recent Discussions</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {posts.map((post) => (
                   <div

@@ -1,8 +1,5 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import { MongoClient } from "mongodb";
-import connectDB from "./mongodb";
-
-const clientPromise = connectDB();
+import clientPromise from "./mongodb";
 
 const adapter = MongoDBAdapter(clientPromise);
 

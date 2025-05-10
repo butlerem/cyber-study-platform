@@ -147,7 +147,7 @@ export default function ChallengePage() {
                     {/* Title and Difficulty */}
                     <div className="flex items-center justify-between mb-6">
                       <motion.h1
-                        className="text-4xl font-bold text-white"
+                        className=""
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
@@ -220,7 +220,7 @@ export default function ChallengePage() {
                           {/* Methodology Section */}
                           {challenge.methodology && challenge.methodology.steps && challenge.methodology.steps.length > 0 && (
                             <div>
-                              <h2 className="text-2xl font-bold text-white mb-6">
+                              <h2 className="mb-6">
                                 Methodology
                               </h2>
                               <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
@@ -251,7 +251,7 @@ export default function ChallengePage() {
                           {/* Code Examples Section */}
                           {challenge.code_examples && challenge.code_examples.length > 0 && (
                             <div>
-                              <h2 className="text-2xl font-bold text-white mb-6">
+                              <h2 className="mb-6">
                                 Code Examples
                               </h2>
                               <div className="space-y-6">
@@ -287,7 +287,7 @@ export default function ChallengePage() {
                           {/* Hints Section */}
                           {challenge.hints && challenge.hints.length > 0 && (
                             <div>
-                              <h2 className="text-2xl font-bold text-white mb-6">
+                              <h2 className="mb-6">
                                 Hints
                               </h2>
                               <div className="space-y-4">
@@ -332,7 +332,7 @@ export default function ChallengePage() {
                                 </div>
                               </div>
                               <div className="prose prose-invert max-w-none">
-                                <h2 className="text-2xl font-bold text-white mb-6">
+                                <h2 className="mb-6">
                                   Solution Approach
                                 </h2>
                                 <p className="text-gray-300">
@@ -340,7 +340,7 @@ export default function ChallengePage() {
                                 </p>
 
                                 <div className="mt-8">
-                                  <h3 className="text-xl font-bold text-white mb-4">
+                                  <h3 className="mb-4">
                                     Solution Code
                                   </h3>
                                   <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
@@ -351,7 +351,7 @@ export default function ChallengePage() {
                                 </div>
 
                                 <div className="mt-8">
-                                  <h3 className="text-xl font-bold text-white mb-4">
+                                  <h3 className="mb-4">
                                     Explanation
                                   </h3>
                                   <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
@@ -365,7 +365,7 @@ export default function ChallengePage() {
                           ) : (
                             <div className="text-center py-12">
                               <Info className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                              <h3 className="text-xl font-bold text-white mb-2">
+                              <h3 className="mb-2">
                                 View Solution
                               </h3>
                               <p className="text-gray-400 mb-6">

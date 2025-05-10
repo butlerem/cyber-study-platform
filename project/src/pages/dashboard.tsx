@@ -316,8 +316,8 @@ export default function Dashboard() {
               transition={{ duration: 0.5 }}
               className="mb-16"
             >
-              <h1 className="text-4xl font-bold text-white mb-4">Dashboard</h1>
-              <p className="text-xl text-gray-400">
+              <h1 className="mb-4">Dashboard</h1>
+              <p className="">
                 Track your progress and achievements
               </p>
             </motion.div>
@@ -378,7 +378,7 @@ export default function Dashboard() {
                         </div>
                       ) : (
                         <div className="flex flex-col items-center">
-                          <h2 className="text-2xl font-bold text-center text-white">
+                          <h2 className="text-center">
                             {username || "Anonymous Hacker"}
                           </h2>
                           <button
@@ -453,7 +453,7 @@ export default function Dashboard() {
               >
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-12">
                   <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
-                    <h3 className="text-lg font-medium text-white">
+                    <h3 className="">
                       Total Points
                     </h3>
                     <p className="mt-2 text-3xl font-bold text-[#9580FF]">
@@ -461,7 +461,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
-                    <h3 className="text-lg font-medium text-white">
+                    <h3 className="">
                       Challenges Completed
                     </h3>
                     <p className="mt-2 text-3xl font-bold text-[#9580FF]">
@@ -469,7 +469,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-white/10 hover:border-white/20 transition-colors duration-300">
-                    <h3 className="text-lg font-medium text-white">
+                    <h3 className="">
                       Completion Rate
                     </h3>
                     <p className="mt-2 text-3xl font-bold text-white/60">
@@ -484,7 +484,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-white mb-6">
+                  <h2 className="mb-6">
                     Challenge Progress
                   </h2>
                   <div className="bg-black/20 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden border border-white/10">
@@ -552,7 +552,7 @@ export default function Dashboard() {
               className="bg-black/20 backdrop-blur-sm rounded-lg p-6 max-w-sm w-full border border-white/10"
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-white">
+                <h3 className="">
                   Profile Picture
                 </h3>
                 <button

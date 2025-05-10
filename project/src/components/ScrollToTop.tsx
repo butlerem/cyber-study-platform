@@ -60,7 +60,7 @@ const ScrollToTop = () => {
       }}
       transition={{ duration: 0.3 }}
     >
-      <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none">
+      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <path
           d="M12 19V5M12 5L5 12M12 5L19 12"
           stroke="currentColor"

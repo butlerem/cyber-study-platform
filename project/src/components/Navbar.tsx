@@ -11,7 +11,7 @@ function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              <Code className="h-6 w-6 text-[#9580FF]" />
+              <Code className="h-6 w-6" />
               <span className="text-2xl font-light tracking-tight">ExpLab</span>
             </Link>
           </div>
@@ -44,7 +44,7 @@ function Navbar() {
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-colors duration-200 font-medium"
+                  className="bg-transparent border-2 border-white py-2 px-6 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-colors duration-200 font-medium"
                 >
                   Logout
                 </button>
@@ -52,7 +52,7 @@ function Navbar() {
             ) : (
               <Link
                 href="/auth/signin"
-                className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-colors duration-200 font-medium"
+                className="bg-transparent border-2 border-white py-2 px-6 rounded-[100px] hover:bg-white/5 hover:border-white/40 transition-colors duration-200 font-medium"
               >
                 Login
               </Link>

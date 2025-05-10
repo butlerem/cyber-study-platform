@@ -1,7 +1,6 @@
-// Convert ES module imports to CommonJS
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const { Challenge } = require('../src/lib/models/Challenge.ts');
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import { Challenge } from '../src/lib/models/Challenge';
 
 // Ensure environment variables are loaded
 dotenv.config();
@@ -149,12 +148,8 @@ Enter the flag you find above to complete this challenge.`,
 
 async function createChallenges() {
   try {
-    await mongoose.connect(MONGODB_URI, {
-      maxPoolSize: 10,
-      minPoolSize: 5,
-      connectTimeoutMS: 10000,
-      socketTimeoutMS: 45000
-    });
+    await mongoose.connect(process.env.MONGODB_URI || '');
+    console.log('Connected to MongoDB');
 
     await Challenge.deleteMany({});
     console.log("Deleted existing challenges");
@@ -163,10 +158,9 @@ async function createChallenges() {
     console.log(`Created ${createdChallenges.length} challenges`);
 
     await mongoose.disconnect();
-    process.exit(0);
+    console.log('Disconnected from MongoDB');
   } catch (error) {
-    console.error("Error creating challenges:", error instanceof Error ? error.message : error);
-    await mongoose.disconnect();
+    console.error('Error:', error);
     process.exit(1);
   }
 }
